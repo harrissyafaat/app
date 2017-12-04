@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Demo JQuery Validation</title>
+<script type="text/javascript" src="jquery-1.2.3.pack.js"></script>
+<script type="text/javascript" src="jquery.validate.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#alumniForm").validate({
+		messages: {
+			email: {
+				required: "E-mail harus diisi",
+				email: "Masukkan E-mail yang valid"
+			}
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parent("td"));
+		}
+	});
+})
+</script>
+<style type="text/css">
+* { font: 11px/20px Verdana, sans-serif; }
+h4 { font-size: 18px; }
+input { padding: 3px; border: 1px solid #999; }
+input.error, select.error { border: 1px solid red; }
+label.error { color:red; margin-left: 10px; }
+dd { padding: 5px; }
+</style>
+</head>
+<body>
+<h4>JQuery Validation</h4>
+<form id="alumniForm" method="post">
+	<table>
+		<tr>
+			<td width="100">NIM</td>
+			<td>
+				<input name="niu" class="required" title="NIM harus diisi" size="30" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Foto</td>
+			<td>
+				<input name="foto" size="40" type="file" />
+			</td>
+		</tr>
+		<tr>
+			<td>Nama</td>
+			<td>
+				<input name="nama" class="required" title="Nama harus diisi" size="40" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Tempat Lahir</td>
+			<td>
+				<input name="tempat_lahir" class="required" title="Tempat lahir harus diisi" size="40" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Tanggal Lahir</td>
+
+			<td>
+				<input name="tgl_lahir" class="required" title="Tanggal lahir harus diisi" size="40" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Alamat</td>
+			<td>
+				<input name="alamat" class="required" title="Alamat harus diisi" size="60" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>No. Telp</td>
+			<td>
+				<input name="no_telp" class="required" title="No. Telp harus diisi" size="30" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>No. HP</td>
+			<td>
+				<input name="no_hp" class="required" title="No. HP harus diisi" size="30" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>E-mail</td>
+			<td>
+				<input name="email" id="email" class="required email" size="30" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Jenis Kelamin</td>
+			<td>
+				<input name="jk" value="L" class="required" title="Jenis Kelamin harus diisi" type="radio" />Laki-laki
+				<input name="jk" value="P" type="radio">Perempuan
+			</td>
+		</tr>
+		<tr>
+			<td>Program Studi</td>
+			<td>
+				<select name="prodi" class="required" title="Program Studi harus dipilih" />
+					<option value="">-- Pilih Program Studi --</option>
+					<option value="1">Teknik Informatika</option>
+					<option value="2">Teknik Komputer</option>
+					<option value="3">Sistem Informasi</option>
+					<option value="4">Manajemen Informatika</option>
+					<option value="5">Komputerisasi Akuntansi</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Angkatan</td>
+			<td>
+				<input name="angkatan" class="required" title="Angkatan harus diisi" size="6" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Tahun Lulus</td>
+			<td>
+				<input name="tahun_lulus" class="required" title="Tahun harus diisi" size="6" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Pekerjaan</td>
+			<td>
+				<input name="pekerjaan" size="50" type="text" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Instansi</td>
+			<td>
+				<input name="instansi" size="50" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td>Status</td>
+			<td>
+				<select name="status" class="required" title="Status harus diisi">
+					<option value="">-- Pilih Status --</option>
+					<option value="1">Single</option>
+					<option value="2">Double</option>
+					<option value="3">Triple</option>
+					<option value="4">It's Complicated</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" value="Submit" />
+				<input type="reset" value="Reset" />
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>
