@@ -1,9 +1,9 @@
 <?php
-	ini_set('display_errors',FALSE);
+	ini_set('display_errors',TRUE);
 	$host	= "localhost";
 	$user	= "root";
-	$pass	= "";
-	$db	= "app_kpr";
+	$pass	= "toor";
+	$db	= "app-koperasi";
 	
 	
 	$koneksi=mysql_connect($host,$user,$pass);
