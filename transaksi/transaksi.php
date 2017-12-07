@@ -353,7 +353,8 @@
 
 <?php
 
-	}elseif($aksi=='pinjam'){
+	}
+	elseif($aksi=='pinjam'){
 		$kode=$_GET['kode_anggota'];
 		$qubah=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
 		$data2=mysql_fetch_array($qubah);
