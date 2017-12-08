@@ -251,14 +251,14 @@
 					echo '<span class="prn">&lt; Previous</span>&nbsp;';
                 }else{
 					$i = $halaman-1;
-					echo '<a href="?pilih=1.2&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
+					echo '<a href="?pilih=2.1&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
 					echo '<span class="prn">...</span>&nbsp;';
 				}	
                 for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
                     if(($halaman) == $i){ 
                         echo '<span>'.$i.'</span>&nbsp;'; 
                     }else{ 
-                        echo '<a href=?pilih=1.2&halaman='.$i.'>'.$i.'</a>';
+                        echo '<a href=?pilih=2.1&halaman='.$i.'>'.$i.'</a>';
                     } 
                 } 
 				
@@ -266,7 +266,7 @@
                 if($halaman < $jmlhalaman){ 
                     $next = ($halaman + 1); 
 					echo '<span class="prn">...</span>&nbsp;';
-                    echo '<a href=?pilih=1.2&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
+                    echo '<a href=?pilih=2.1&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
                 }else {
 					echo '<span class="prn">Next &gt;</span>&nbsp;';
 				}
@@ -339,16 +339,21 @@
         <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
     </dl>
     <div align="center">
-    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="simpan();" />
+    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="cetak();" />
 		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
 	</div>
 </fieldset>
 </form>
 </div>
+<iframe src="<?php echo "tandabukti/cetak_buku.php?kode_anggota=".$kode ?>" style="display:none;" name="frame"></iframe>
 <script type="text/javascript">
-		function simpan(){
-		controlWindow=window.open("tandabukti/BTS.php?kode_anggota=<?php echo $kode ?>","","toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=no,width=850,height=500");
+	function simpan(){
+	controlWindow=window.open("tandabukti/BTS.php?kode_anggota=<?php echo $kode ?>","","toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=no,width=850,height=500");
+    }
+	function cetak(){
+		frames['frame'].print();
 	}
+
 </script>
 
 <?php
