@@ -339,7 +339,7 @@
         <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
     </dl>
     <div align="center">
-    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="cetak();" />
+    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="" />
 		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
 	</div>
 </fieldset>

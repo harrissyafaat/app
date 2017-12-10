@@ -65,7 +65,9 @@ if($pros=="simpan" || $pros=="pinjam"){
 							$q=mysql_query("UPDATE t_tabungan SET besar_tabungan = '$saldo_baru' 
 					  						WHERE kode_tabungan='$data[kode_tabungan]'");
 							
-							header("location:../index.php?pilih=2.1");
+							echo "<iframe  src=\"../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."\" style=\"display:none;\" name=\"frame\"></iframe>";
+							echo "<script>frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
+							//header("location:../index.php?pilih=2.1");
 							break;
 		
 		case "pinjam"	:	$tb->pinjam($besar_pinjaman);
