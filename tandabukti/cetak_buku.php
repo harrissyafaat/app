@@ -34,13 +34,13 @@ $sa = $spaceAfter / 0.75;
 
 $kode_anggota = $_GET['kode_anggota'];
 
-$squery = "SELECT * FROM t_simpan WHERE kode_anggota='$kode_anggota'";
+$squery = "SELECT * FROM t_simpan WHERE kode_anggota='$kode_anggota' AND status=1";
 $s=mysqli_query($koneksi,$squery);
 $jumlahRow = mysqli_num_rows($s);
 
 // max rows
 // $maxRow = floor($ph - ($mt + $mb) / ($fs + $sa + $sb));
-$spasi = $jumlahRow % 10;
+$spasi = $jumlahRow % 27;
 
 $data = mysqli_query ($koneksi, "SELECT kode_jenis_simpan, tgl_simpan, besar_simpanan FROM t_simpan WHERE kode_anggota='$kode_anggota' AND kode_jenis_simpan='S0001' ORDER BY kode_simpan DESC LIMIT 1");
 
@@ -55,16 +55,18 @@ while ($row = $saldo->fetch_assoc()){
   <head>
     <meta charset="utf-8">
     <title></title>
-    <style media="screen">
+    <style>
       @media print {
       	#row {
       		display: block;
-      		-webkit-margin-after:8pt;
+          font-size: 9pt;
+      		-webkit-margin-after:5pt;
       	}
       }
       #row {
       		display: block;
-      		-webkit-margin-after:8pt;
+          font-size: 9pt;
+      		-webkit-margin-after:5pt;
     </style>
   </head>
   <body>
@@ -79,7 +81,7 @@ while ($row = $saldo->fetch_assoc()){
       	echo "<table width=\"100%\" style=\"text-align: right;\">"; 
 		echo "<tr>";
       		if ($data->num_rows > 0){
-      			if ($spasi = 2){
+      			if ($spasi = 12){
       				echo "<span id='row'>&nbsp;</span>";
       				echo "<span id='row'>&nbsp;</span>";
       			}
