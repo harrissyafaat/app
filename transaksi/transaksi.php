@@ -288,9 +288,10 @@
 		$data2=mysql_fetch_array($qubah);
 ?>
 
+<!-- FORM SIMPANAN -->
 <div id="box">
 <h3 id="adduser">Form Input Data Simpanan</h3>
-<form action="transaksi/proses_transaksi.php?pros=simpan" method="post" id="form" name="mainform" onSubmit="validasiSimpan()">
+<form action="transaksi/proses_transaksi.php?pros=simpan" method="post" id="form" name="mainform" >
 <fieldset>
     <dl>
 		<dt><label for="kode_anggota">Kode Anggota :</label></dt>
@@ -308,10 +309,17 @@
 		<dt><label for="tgl_simpan">Tanggal Simpan :</label></dt>
         <dd><input type="text" name="tgl_simpan" size="24" id="tanggal" class="required" title="Tanggal Simpan harus diisi" required /></dd>
     </dl>
-	<dl>
+    <dl>
+    	<dt><label for="tgl_simpan">Jenis Transaksi :</label></dt>
+        <dd><select name="jenis_transaksi" id="jenis_transaksi">
+		  <option value="simpan">Simpan</option>
+		  <option value="ambil">Ambil</option>
+		</select></dd>
+    </dl>
+	<dl id="jenis_simpanan">
         <dt><label for="nama_simpan">Jenis Simpanan :</label></dt>
         <dd>
-            <select name="kode_jenis_simpan" id="kode_jenis_simpan" onChange="show(this.value)" class="required" title="Jenis Simpan harus diisi" style="width: 200px;" required>
+            <select name="kode_jenis_simpan" id="kode_jenis_simpan" onChange="show(this.value)" class="required" title="Jenis Simpan harus diisi" style="width: 200px;" >
                 <option value="" selected="selected">- pilih jenis simpanan -</option>
                 <?php
                 $q=mysql_query("SELECT * FROM t_jenis_simpan");
@@ -325,37 +333,38 @@
             </select>
 		</dd>
 	</dl>
+	<script type="text/javascript">
+	$( "#jenis_transaksi" ).change(function() {
+		if (this.value == "simpan"){
+			$("#jenis_simpanan").show();		
+		} else {
+			$("#jenis_simpanan").hide();
+		}
+  	
+	});
+
+
+	</script>
 	<dl>
-        <dt><label for="besar_simpanan">Besar Simpanan :</label></dt>
-        <dd><input type="text" name="besar_simpanan" id="besar_simpanan" size="54" required /></dd>
+        <dt><label for="nominal">Nominal :</label></dt>
+        <dd><input type="text" name="nominal" id="nominal" size="54" required /></dd>
     </dl>
     </dl>
 	<dl>
 		<dt><label for="user_entri">User Entri :</label></dt>
-        <dd><input type="text" name="user_entri" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly ></dd>
+        <dd><input type="text" name="u_entry" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly ></dd>
     </dl>
     <dl>
         <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
         <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
     </dl>
     <div align="center">
-    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="" />
+    	<input type="submit" name="tambah" id="button1" value="Tambah" />
 		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
 	</div>
 </fieldset>
 </form>
 </div>
-<iframe src="<?php echo "tandabukti/cetak_buku.php?kode_anggota=".$kode ?>" style="display:none;" name="frame"></iframe>
-<script type="text/javascript">
-	function simpan(){
-	controlWindow=window.open("tandabukti/BTS.php?kode_anggota=<?php echo $kode ?>","","toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=no,width=850,height=500");
-    }
-	function cetak(){
-		frames['frame'].print();
-	}
-
-</script>
-
 <?php
 
 	}
@@ -365,6 +374,7 @@
 		$data2=mysql_fetch_array($qubah);
 ?>
 
+<!-- FORM PINJAAN -->
 <div id="box">
 <h3 id="adduser">Form Input Pinjaman</h3>
 <form action="transaksi/proses_transaksi.php?pros=pinjam" method="post" id="form" name="frmAdd">
@@ -426,7 +436,7 @@
         <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly style="background-color:#CCCCCC" /></dd>
     </dl>
     <div align="center">
-    	<input type="submit" name="tambah" id="button1" value="Tambah" onClick="pinjam();" />
+    	<input type="submit" name="tambah" id="button1" value="Tambah" />
 		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
 	</div>
 </fieldset>

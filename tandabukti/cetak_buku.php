@@ -33,6 +33,7 @@ $sb = $spaceBefore / 0.75;
 $sa = $spaceAfter / 0.75;
 
 $kode_anggota = $_GET['kode_anggota'];
+$jenis_transaksi = $_GET['jenis_transaksi'];
 
 $squery = "SELECT * FROM t_simpan WHERE kode_anggota='$kode_anggota' AND status=1";
 $s=mysqli_query($koneksi,$squery);
@@ -42,12 +43,19 @@ $jumlahRow = mysqli_num_rows($s);
 // $maxRow = floor($ph - ($mt + $mb) / ($fs + $sa + $sb));
 $spasi = $jumlahRow % 27;
 
-$data = mysqli_query ($koneksi, "SELECT kode_jenis_simpan, tgl_simpan, besar_simpanan FROM t_simpan WHERE kode_anggota='$kode_anggota' AND kode_jenis_simpan='S0001' ORDER BY kode_simpan DESC LIMIT 1");
-
-$saldo = mysqli_query ($koneksi, "SELECT sum(besar_simpanan) AS total_saldo FROM t_simpan WHERE kode_anggota='$kode_anggota'");
-while ($row = $saldo->fetch_assoc()){
-	$total_saldo = $row["total_saldo"];
+if ($jenis_transaksi == 'simpan') {
+  $data = mysqli_query ($koneksi, "SELECT kode_jenis_simpan, tgl_simpan, besar_simpanan FROM t_simpan WHERE kode_anggota='$kode_anggota' ORDER BY kode_simpan DESC LIMIT 1");
+  $sq = mysqli_query ($koneksi, "SELECT sum(besar_simpanan) AS total_saldo FROM t_simpan WHERE kode_anggota='$kode_anggota'");
+  $d = mysqli_fetch_array($sq, MYSQLI_ASSOC);
+  $total_saldo = $d['total_saldo'];
+} elseif ($jenis_transaksi == 'pinjam') {
+  $data = mysqli_query ($koneksi, "SELECT kode_jenis_pinjam, tgl_pinjam, besar_pinjaman FROM t_pinjam WHERE kode_anggota='$kode_anggota' ORDER BY kode_pinjam DESC LIMIT 1");
+  $sq = mysqli_query ($koneksi, "SELECT sum(besar_pinjaman) AS total_saldo FROM t_pinjam WHERE kode_anggota='$kode_anggota'");
+  $d = mysqli_fetch_array($sq, MYSQLI_ASSOC);
+  $total_saldo = $d['total_saldo'];
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -79,18 +87,26 @@ while ($row = $saldo->fetch_assoc()){
   		}
 
       	echo "<table width=\"100%\" style=\"text-align: right;\">"; 
-		echo "<tr>";
+		    echo "<tr>";
       		if ($data->num_rows > 0){
-      			if ($spasi = 12){
+      			if ($spasiTengah == 12){
       				echo "<span id='row'>&nbsp;</span>";
       				echo "<span id='row'>&nbsp;</span>";
       			}
         		while ($row = $data->fetch_assoc()){
-      			echo "<td width=\"8%\"><span id='row'>01</span></td>"; 
-				echo "<td width=\"20%\"><span id='row'>".$row["tgl_simpan"]."</span></td>"; 
-				echo "<td width=\"12%\"><span id='row'>".$row["kode_jenis_simpan"]."</span></td>"; 
-				echo "<td width=\"30%\"><span id='row'>".$row["besar_simpanan"]."</span></td>"; 
-				echo "<td width=\"30%\"><span id='row'>".$total_saldo."</span></td>";
+        			if ($jenis_transaksi == 'simpan'){
+                echo "<td width=\"8%\"><span id='row'>".++$jumlahRow."</span></td>"; 
+                echo "<td width=\"20%\"><span id='row'>".$row["tgl_simpan"]."</span></td>"; 
+                echo "<td width=\"12%\"><span id='row'>".$row["kode_jenis_simpan"]."</span></td>"; 
+                echo "<td width=\"30%\"><span id='row'>".$row["besar_simpanan"]."</span></td>"; 
+                echo "<td width=\"30%\"><span id='row'>".$total_saldo."</span></td>";
+              } elseif ($jenis_transaksi == 'pinjam') {
+                echo "<td width=\"8%\"><span id='row'>".++$jumlahRow."</span></td>"; 
+                echo "<td width=\"20%\"><span id='row'>".$row["tgl_pinjam"]."</span></td>"; 
+                echo "<td width=\"12%\"><span id='row'>".$row["kode_jenis_pinjam"]."</span></td>"; 
+                echo "<td width=\"30%\"><span id='row'>".$row["besar_pinjaman"]."</span></td>"; 
+                echo "<td width=\"30%\"><span id='row'>".$total_saldo."</span></td>";
+              }
       			}
       		}
       	echo "</tr>"; 
