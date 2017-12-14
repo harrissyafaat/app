@@ -32,8 +32,8 @@
 		<tr>
              <th><a href="#">No</a></th>
              <th><a href="#">Nama Anggota</a></th>
-			 <th><a href="#">Saldo Tabungan</a></th>
              <th><a href="#">Jumlah Pinjaman</a></th>
+			 <th><a href="#">Sisa Pinjaman</a></th>             
 			 <th><a href="#">Aksi</a></th>
        	</tr>
     </thead>
@@ -48,7 +48,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota, T.besar_tabungan
+			$query = mysql_query("SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota, T.besar_tabungan
 								FROM t_pinjam P, t_anggota A, t_tabungan T
 								WHERE $kategori LIKE '%$cari%'
 								AND P.kode_anggota = A.kode_anggota
@@ -56,7 +56,7 @@
 								GROUP BY A.nama_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota ,T.besar_tabungan
+			$query = mysql_query("SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota ,T.besar_tabungan
 								FROM t_pinjam P, t_anggota A, t_tabungan T
 								WHERE P.kode_anggota = A.kode_anggota
 								AND A.kode_tabungan = T.kode_tabungan
@@ -69,10 +69,10 @@
 ?>
     <tbody>
     	<tr>
-			<td><?php echo $no++;?></td>
+			<td align="center"><?php echo $no++;?></td>
 			<td><?php echo $data['nama_anggota'];?></td>
-			<td><?php echo Rp($data['besar_tabungan']);?></td>
-			<td><?php echo Rp($data['total']);?></td>
+			<td align="center"><?php echo "Rp. ".($data['total']);?></td>
+			<td align="center"><?php echo "Rp. ".($data['sisa_pinjaman']);?></td>
 			<td align="center">
 	<a href=index.php?pilih=3.3&aksi=show&kode_anggota=<?php echo $data['kode_anggota'];?>><img src="img/user.png" title="Detail" width="16" height="16" /></a>
 			</td>
