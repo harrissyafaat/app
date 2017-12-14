@@ -11,6 +11,12 @@ $u_entry			= $_POST['u_entry'];
 $tgl_entri			= $_POST['tgl_entri'];
 $jenis_transaksi	= $_POST['jenis_transaksi'];
 
+if ($jenis_transaksi == 'pinjam'){
+	$kode_jenis_transaksi = 2;
+} else {
+	$kode_jenis_transaksi = $kode_jenis_simpan;
+}
+
 // PINJAM
 $kode_pinjam		= $_POST['kode_pinjam'];
 $tgl_pinjam			= $_POST['tgl_pinjam'];
@@ -64,12 +70,12 @@ if($pros=="simpan" || $pros=="pinjam"){
 					  			$nominal = 0 - $nominal;
 					  		}
 
-							$qtambah = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','$kode_jenis_simpan','$kode_anggota','$tgl_simpan','$nominal','$u_entry','$tgl_entri')");
+							$qtambah = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','$kode_jenis_transaksi','$kode_anggota','$tgl_simpan','$nominal','$u_entry','$tgl_entri')");
 
 							$q = mysqli_query ($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru' 
 					  						WHERE kode_tabungan='$data[kode_tabungan]'");
 							
-							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan' style='display:none' name='frame'></iframe>";
+							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan'  name='frame'></iframe>";
 							echo "<script>frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
 							//header("location:../index.php?pilih=2.1");
 							break;
