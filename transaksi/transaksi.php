@@ -307,7 +307,7 @@
     </dl>
 	 <dl>
 		<dt><label for="tgl_simpan">Tanggal Simpan :</label></dt>
-        <dd><input type="text" name="tgl_simpan" size="24" id="tanggal" class="required" title="Tanggal Simpan harus diisi" required /></dd>
+        <dd><input type="text" value="<?php echo date('Y-m-d'); ?>" name="tgl_simpan" size="10" id="tanggal" class="required" title="Tanggal Simpan harus diisi" required /></dd>
     </dl>
     <dl>
     	<dt><label for="tgl_simpan">Jenis Transaksi :</label></dt>
@@ -356,7 +356,7 @@
     </dl>
     <dl>
         <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
+        <dd><input type="text" name="tgl_entri" size="10" value="<?php echo date("Y-m-d");?>" readonly /></dd>
     </dl>
     <div align="center">
     	<input type="submit" name="tambah" id="button1" value="Tambah" />
@@ -393,7 +393,7 @@
     </dl>
 	 <dl>
 		<dt><label for="tgl_pinjam">Tanggal Pinjam :</label></dt>
-        <dd><input id="tanggal" type="text" name="tgl_pinjam" size="54" class="required" title="Tanggal Pinjam harus diisi"/></dd>
+        <dd><input id="tanggal" value="<?php echo date('Y-m-d'); ?>" type="text" name="tgl_pinjam" size="10" class="required" title="Tanggal Pinjam harus diisi"/></dd>
     </dl>
 	<dl>
 		<dt><label for="nama_pinjaman">Jenis Pinjaman :</label></dt>
@@ -433,7 +433,7 @@
     </dl>
     <dl>
         <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly style="background-color:#CCCCCC" /></dd>
+        <dd><input type="text" name="tgl_entri" size="10" value="<?php echo date("Y-m-d");?>" readonly style="background-color:#CCCCCC" /></dd>
     </dl>
     <div align="center">
     	<input type="submit" name="tambah" id="button1" value="Tambah" />
@@ -486,7 +486,7 @@
     </dl>
     <dl>
 		<dt><label for="tgl_pinjam">Tanggal Pinjam :</label></dt>
-        <dd><input id="tgl_pinjam" type="text" name="tgl_pinjam" size="54" readonly /></dd>
+        <dd><input id="tgl_pinjam" type="text" name="tgl_pinjam" size="10" readonly /></dd>
     </dl>
 	<dl>
 		<dt><label for="besar_pinjaman">Besar Pinjam :</label></dt>
@@ -511,7 +511,7 @@
     </dl>    
 	<dl>
 		<dt><label for="tgl_angsur">Tanggal angsur :</label></dt>
-        <dd><input type="text" name="tgl_angsur" size="54" id="tanggal"/></dd>
+        <dd><input type="text" value="<?php echo date('Y-m-d'); ?>" name="tgl_angsur" size="10" id="tanggal"/></dd>
     </dl>
 	<dl>
 		<dt><label for="user_entri">User Entri :</label></dt>
@@ -519,7 +519,7 @@
     </dl>
     <dl>
         <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/></dd>
+        <dd><input type="text" name="tgl_entri" size="10" value="<?php echo date("Y-m-d");?>" readonly/></dd>
     </dl>
     <div align="center">
     	<input type="submit" name="tambah" id="button1" value="Tambah" />
