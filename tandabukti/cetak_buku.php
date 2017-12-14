@@ -95,11 +95,16 @@ if ($jenis_transaksi == 'simpan') {
       			}
         		while ($row = $data->fetch_assoc()){
         			if ($jenis_transaksi == 'simpan'){
-                echo "<td width=\"8%\"><span id='row'>".++$jumlahRow."</span></td>"; 
                 echo "<td width=\"20%\"><span id='row'>".$row["tgl_simpan"]."</span></td>"; 
-                echo "<td width=\"12%\"><span id='row'>".$row["kode_jenis_simpan"]."</span></td>"; 
-                echo "<td width=\"30%\"><span id='row'>".$row["besar_simpanan"]."</span></td>"; 
-                echo "<td width=\"30%\"><span id='row'>".$total_saldo."</span></td>";
+                echo "<td width=\"15%\"><span id='row'>".$row["kode_jenis_simpan"]."</span></td>"; 
+                if ($kode_jenis_simpan == 2){
+                  echo "<td width=\"30%\"><span id='row'>".$row["besar_simpanan"]."</span></td>"; 
+                  echo "<td width=\"30%\"><span id='row'></span></td>";   
+                } else {
+                  echo "<td width=\"30%\"><span id='row'></span></td>";   
+                  echo "<td width=\"30%\"><span id='row'>".$row["besar_simpanan"]."</span></td>"; 
+                }
+                echo "<td width=\"35%\"><span id='row'>".$total_saldo."</span></td>";
               } elseif ($jenis_transaksi == 'pinjam') {
                 echo "<td width=\"8%\"><span id='row'>".++$jumlahRow."</span></td>"; 
                 echo "<td width=\"20%\"><span id='row'>".$row["tgl_pinjam"]."</span></td>"; 
@@ -109,8 +114,8 @@ if ($jenis_transaksi == 'simpan') {
               }
       			}
       		}
-      	echo "</tr>"; 
-		echo "</table>";
+      echo "</tr>"; 
+		  echo "</table>";
   		echo "</div>"
   	?>
   </body>

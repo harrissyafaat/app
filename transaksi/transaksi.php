@@ -312,19 +312,18 @@
     <dl>
     	<dt><label for="tgl_simpan">Jenis Transaksi :</label></dt>
         <dd><select name="jenis_transaksi" id="jenis_transaksi">
-		  <option value="simpan">Simpan</option>
-		  <option value="ambil">Ambil</option>
+		  <option value="simpan">Simpanan</option>
+		  <option value="pinjam">Pengambilan</option>
 		</select></dd>
     </dl>
 	<dl id="jenis_simpanan">
         <dt><label for="nama_simpan">Jenis Simpanan :</label></dt>
         <dd>
-            <select name="kode_jenis_simpan" id="kode_jenis_simpan" onChange="show(this.value)" class="required" title="Jenis Simpan harus diisi" style="width: 200px;" >
+            <select name="kode_jenis_simpan" id="kode_jenis_simpan" onChange="show(this.value)" class="required" title="Jenis Simpan harus diisi" style="width: 200px;">
                 <option value="" selected="selected">- pilih jenis simpanan -</option>
                 <?php
                 $q=mysql_query("SELECT * FROM t_jenis_simpan");
                 while($a=mysql_fetch_array($q)){
-				$disabled = ($a['kode_jenis_simpan']=="S0001")? "disabled" : "";
                 ?>
                     <option value="<?php echo $a['kode_jenis_simpan'];?>" <?php echo $disabled;?>><?php echo $a['nama_simpanan'];?></option>
                 <?php
@@ -347,7 +346,7 @@
 	</script>
 	<dl>
         <dt><label for="nominal">Nominal :</label></dt>
-        <dd><input type="text" name="nominal" id="nominal" size="54" required /></dd>
+        <dd><input type="text" name="nominal" id="besar_simpanan" size="54" required /></dd>
     </dl>
     </dl>
 	<dl>
