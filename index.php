@@ -67,12 +67,14 @@ ddaccordion.init({
 <body>
 
 	<div class="header">
-	<div style="width: 220px; padding-left: 25px;">
+	<div style=" padding-left: 25px;">
 		<img style="width: 50px; float: left;" src="images/logo.png">
-		<div style="float: right; padding-top: 5px;">
+		<div style="float: left; padding-top: 5px; padding-left: 10px;">
 		Jam'iyah Waqi'ah<br> 
 		<h4>Sunan Kalijogo</h4>
+
 		</div>
+		<a href="" style=" float: right; padding-right: 25px; "><img width="50px" src="images/push.png"></a>
 	</div>
 	</div>
 	<div class="sidebarmenu"></div>
