@@ -66,7 +66,7 @@ if($pros=="simpan" || $pros=="pinjam"){
 		case "simpan"	:	$tb->simpan($besar_simpanan);
 					  		$saldo_baru = $tb->cek_saldo();
 
-					  		if ($jenis_transaksi == 'ambil'){
+					  		if ($jenis_transaksi == 'pinjam'){
 					  			$nominal = 0 - $nominal;
 					  		}
 
@@ -75,9 +75,8 @@ if($pros=="simpan" || $pros=="pinjam"){
 							$q = mysqli_query ($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru' 
 					  						WHERE kode_tabungan='$data[kode_tabungan]'");
 							
-							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan'  name='frame'></iframe>";
-							echo "<script>frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
-							header("location:../index.php?pilih=2.1");
+							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan' style='display:none;' name='frame'></iframe>";
+							echo "<script>frames['frame'].print(); setTimeout(function(){},1000); window.location.replace('../index.php?pilih=2.1');</script>";
 							break;
 		
 		case "pinjam"	:	$tb->pinjam($besar_pinjaman);
@@ -89,7 +88,6 @@ if($pros=="simpan" || $pros=="pinjam"){
 
 							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=pinjam' style='display:none' name='frame'></iframe>";
 							echo "<script>frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
-							header("location:../index.php?pilih=2.1");
 							break;
 		
 		case "angsur"	:	
