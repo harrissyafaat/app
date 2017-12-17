@@ -63,7 +63,63 @@ ddaccordion.init({
    }
 </script>
 </head>
+<style type="text/css">
+/* Firefox old*/
+@-moz-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
 
+@-webkit-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}
+/* IE */
+@-ms-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
+/* Opera and prob css3 final iteration */
+@keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
+.blink-image {
+    -moz-animation: blink normal 0.7s infinite ease-in-out; /* Firefox */
+    -webkit-animation: blink normal 0.7s infinite ease-in-out; /* Webkit */
+    -ms-animation: blink normal 0.7s infinite ease-in-out; /* IE */
+    animation: blink normal 0.7s infinite ease-in-out; /* Opera and prob css3 final iteration */
+}
+</style>
+</style>
 <body>
 
 	<div class="header">
@@ -74,7 +130,12 @@ ddaccordion.init({
 		<h4>Sunan Kalijogo</h4>
 
 		</div>
-		<a href="" style=" float: right; padding-right: 25px; "><img width="50px" src="images/push.png"></a>
+		<a href="" style=" float: right; padding-right: 25px; ">
+			<img style=" margin-left: 13px;" class="blink-image" width="45px" src="images/push.png">
+			<div style="font-size: 10px; color: white; margin-top: -5px;">
+				Hitung bunga
+			</div>
+		</a>
 	</div>
 	</div>
 	<div class="sidebarmenu"></div>

@@ -39,7 +39,7 @@
     </thead>
 <?php
 	// PAGING
-		$batas=5;
+		$batas=25;
 		$halaman=$_GET['halaman'];
 		if(empty($halaman)){
 			$posisi=0;

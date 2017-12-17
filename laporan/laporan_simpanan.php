@@ -45,7 +45,7 @@
     </thead>
 <?php
 	// PAGING
-		$batas=10;
+		$batas=25;
 		$halaman=$_GET['halaman'];
 		if(empty($halaman)){
 			$posisi=0;
