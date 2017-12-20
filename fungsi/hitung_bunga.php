@@ -21,16 +21,17 @@ while ($row = $listAnggota->fetch_assoc()) {
 	if ($selisih < 30){
 		$hasilBagi = 0.0005 * $selisih * $rSaldo['saldo'];
 		if ($hasilBagi > 0){
-			//$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");	
+			$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");	
 		}		
 
 	} else {
 		$hasilBagi = 0.0005 * $sel_tgl_hitung * $rSaldo['saldo'];
-		//$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");
-		echo "<script>alert('Bunga Telah Ditambahkan'); window.location.replace('../index.php');</script>";
+		$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");
 	}
 }
 
 $qtbh = mysqli_query ($koneksi, "INSERT INTO t_bagihasil (id, tgl_hitung, u_entry) VALUES ('', CURDATE(), 'jalo')");
+echo "<script>alert('Bunga Telah Ditambahkan'); window.location.replace('../index.php');</script>";
+
 
 ?>

@@ -130,7 +130,6 @@ ddaccordion.init({
 		<h4>Sunan Kalijogo</h4>
 
 		</div>
-		<a href="fungsi/hitung_bunga.php" style=" float: right; padding-right: 25px; ">
 			<?php
 				$conn = new mysqli("localhost", "root", "toor", "app-koperasi");
 				$tgl_sekarang = date('Y-m-d');
@@ -139,10 +138,11 @@ ddaccordion.init({
 				$sel_tgl_hitung = $rt['tgl_hitung'];
 
 				if ($sel_tgl_hitung >= 30){
+					echo "<a href=\"fungsi/hitung_bunga.php\" style=\" float: right; padding-right: 25px; \">";
 					echo "<img style=\" margin-left: 13px;\" class=\"blink-image\" width=\"45px\" src=\"images/push.png\"><div style=\"font-size: 10px; color: white; margin-top: -5px;\">Hitung bunga</div>";
+					echo "</a>";
 				}
 			?>
-		</a>
 	</div>
 	</div>
 	<div class="sidebarmenu"></div>

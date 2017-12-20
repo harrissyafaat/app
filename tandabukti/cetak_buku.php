@@ -108,12 +108,10 @@ if ($jenis_transaksi == 'simpan') {
                 echo "</tr>";
                 // Update Status Print
                 $qus = mysqli_query ($koneksi, "UPDATE t_simpan SET status='1' WHERE kode_simpan='$row[kode_simpan]'");
-              } elseif ($jenis_transaksi == 'pinjam') {
-                echo "<td width=\"8%\"><span id='row'>".++$jumlahRow."</span></td>"; 
-                echo "<td width=\"20%\"><span id='row'>".$row["tgl_pinjam"]."</span></td>"; 
-                echo "<td width=\"12%\"><span id='row'>".$row["kode_jenis_pinjam"]."</span></td>"; 
-                echo "<td width=\"30%\"><span id='row'>".$row["besar_pinjaman"]."</span></td>"; 
-                echo "<td width=\"30%\"><span id='row'>".$total_saldo."</span></td>";
+              } else if ($jenis_transaksi == 'pinjam') {
+                // Display pnjam
+              } else if ($jenis_transaksi == 'angsur'){
+                // Display angsur
               }
       			}
       		}
