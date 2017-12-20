@@ -29,6 +29,10 @@ while ($row = $listAnggota->fetch_assoc()) {
 		$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");
 		echo "<script>alert('Bunga Telah Ditambahkan'); window.location.replace('../index.php');</script>";
 	}
+
+	$tgl = date('Y-m-d');
+
+	mysqli_query ($koneksi, "UPDATE t_bagihasil set tgl_hitung = '$tgl' where u_entry='admin'");
 }
 
 ?>

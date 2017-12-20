@@ -140,8 +140,9 @@ ddaccordion.init({
 
 				if ($sel_tgl_hitung >= 30){
 					echo "<img style=\" margin-left: 13px;\" class=\"blink-image\" width=\"45px\" src=\"images/push.png\"><div style=\"font-size: 10px; color: white; margin-top: -5px;\">Hitung bunga</div>";
-					echo "string";
+					// echo "string";
 				}
+
 			?>
 		</a>
 	</div>
