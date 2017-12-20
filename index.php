@@ -132,15 +132,14 @@ ddaccordion.init({
 		</div>
 		<a href="fungsi/hitung_bunga.php" style=" float: right; padding-right: 25px; ">
 			<?php
-				include 'config/conn.php';
+				$conn = new mysqli("localhost", "root", "toor", "app-koperasi");
 				$tgl_sekarang = date('Y-m-d');
-				$qt = mysqli_query ($koneksi, "SELECT DATEDIFF('$tgl_sekarang', tgl_hitung) AS tgl_hitung FROM t_bagihasil ORDER BY id DESC LIMIT 1");
+				$qt = mysqli_query ($conn, "SELECT DATEDIFF('$tgl_sekarang', tgl_hitung) AS tgl_hitung FROM t_bagihasil ORDER BY id DESC LIMIT 1");
 				$rt = mysqli_fetch_array($qt, MYSQLI_ASSOC);
 				$sel_tgl_hitung = $rt['tgl_hitung'];
 
 				if ($sel_tgl_hitung >= 30){
 					echo "<img style=\" margin-left: 13px;\" class=\"blink-image\" width=\"45px\" src=\"images/push.png\"><div style=\"font-size: 10px; color: white; margin-top: -5px;\">Hitung bunga</div>";
-					echo "string";
 				}
 			?>
 		</a>
