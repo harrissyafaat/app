@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 include '../config/conn.php';
 
-$u_entry = 'admin';
+$u_entry = $_SESSION['kopname'];
 $tgl_sekarang = date('Y-m-d');
 
 $qt = mysqli_query ($koneksi, "SELECT DATEDIFF('$tgl_sekarang', tgl_hitung) AS tgl_hitung FROM t_bagihasil ORDER BY id DESC LIMIT 1");
@@ -27,12 +27,15 @@ while ($row = $listAnggota->fetch_assoc()) {
 	} else {
 		$hasilBagi = 0.0005 * $sel_tgl_hitung * $rSaldo['saldo'];
 		$qBagiHasil = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','1051','$row[kode_anggota]', CURDATE() ,'$hasilBagi','$u_entry', CURDATE())");
-		echo "<script>alert('Bunga Telah Ditambahkan'); window.location.replace('../index.php');</script>";
 	}
 
 	$tgl = date('Y-m-d');
 
 	mysqli_query ($koneksi, "UPDATE t_bagihasil set tgl_hitung = '$tgl' where u_entry='admin'");
 }
+
+$qtbh = mysqli_query ($koneksi, "INSERT INTO t_bagihasil (id, tgl_hitung, u_entry) VALUES ('', CURDATE(), 'jalo')");
+echo "<script>alert('Bunga Telah Ditambahkan'); window.location.replace('../index.php');</script>";
+
 
 ?>
