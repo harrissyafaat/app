@@ -1,5 +1,5 @@
 <?php
-include "config/koneksi.php";
+include "config/conn.php";
 $kode_pinjam = $_POST['kode_pinjam'];
 
 if($kode_pinjam!=""){
@@ -11,11 +11,11 @@ if($kode_pinjam!=""){
 			WHERE a.kode_pinjam='$kode_pinjam' and 
 			a.kode_angsur=(select max(kode_angsur) from t_angsur where kode_pinjam='$kode_pinjam')";
 
-	$data = mysql_query($sql);
-	$data1 = mysql_query($sql1);
+	$data = mysqli_query($koneksi, $sql);
+	$data1 = mysqli_query($koneksi, $sql1);
 
-	if($d = mysql_fetch_object($data)){
-		$d1 = mysql_fetch_object($data1);
+	if($d = mysqli_fetch_object($data)){
+		$d1 = mysqli_fetch_object($data1);
 		$arr = array("KODE_PINJAM"=>$d->kode_pinjam,
 						"TGL_PINJAM"=>$d->tgl_pinjam,
 						"BESAR_PINJAMAN"=>$d->besar_pinjaman,

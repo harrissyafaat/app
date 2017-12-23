@@ -1,11 +1,12 @@
 <?php
 	function kode($tabel, $initial){
-		$struct = mysql_query("SELECT * FROM $tabel");
-		$field  = mysql_field_name($struct,0);
-		$len    = mysql_field_len($struct,0);
+		$conn = new mysqli("localhost", "root", "toor", "app-koperasi");
+		$struct = mysqli_query($conn, "SELECT * FROM $tabel");
+		$field  = mysqli_field_name($struct,0);
+		$len    = mysqli_field_len($struct,0);
 		
-		$qry = mysql_query("SELECT max(".$field.")FROM ".$tabel);
-		$row = mysql_fetch_array($qry);
+		$qry = mysqli_query($conn, "SELECT max(".$field.")FROM ".$tabel);
+		$row = mysqli_fetch_array($qry, MYSQLI_ASSOC);
 		
 		if($row[0]==""){
 		   $angka=0;
@@ -26,11 +27,12 @@
 
  
 	function nomer($initial,$field,$table){
-		$sql=mysql_query("SELECT $field FROM $table ORDER BY $field DESC LIMIT 1 ") or die (mysql_error());
-		$d=mysql_num_rows($sql);
+		$conn = new mysqli("localhost", "root", "toor", "app-koperasi");
+		$sql=mysqli_query($conn, "SELECT $field FROM $table ORDER BY $field DESC LIMIT 1 ") or die (mysqli_error($conn));
+		$d=mysqli_num_rows($sql);
 		
 		if($d>0){
-			$r=mysql_fetch_array($sql);
+			$r=mysqli_fetch_array($sql, MYSQLI_ASSOC);
 			$d=$r[$field];
 			$str=substr($d,1,4);
 			$No_Urut =(int)$str;

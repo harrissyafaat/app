@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -54,7 +54,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT U.*, P.nama_petugas, R.rule 
+			$query = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
 								FROM t_user U, t_petugas P, user_rule R 
 								WHERE $kategori LIKE '%$cari%'
 								AND U.kode_petugas = P.kode_petugas
@@ -62,7 +62,7 @@
 								ORDER BY kode_user ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query=mysql_query("SELECT U.*, P.nama_petugas, R.rule 
+			$query=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
 								FROM t_user U, t_petugas P, user_rule R 
 								WHERE U.kode_petugas = P.kode_petugas
 								AND U.c_rule = R.c_rule 
@@ -71,7 +71,7 @@
 		}
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -94,20 +94,20 @@
          <?php
             // PAGING
 			if($kategori!=""){
-				$query2 = mysql_query("SELECT U.*, P.nama_petugas, R.rule 
+				$query2 = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
 									FROM t_user U, t_petugas P, user_rule R 
 									WHERE $kategori LIKE '%$cari%'
 									AND U.kode_petugas = P.kode_petugas
 									AND U.c_rule = R.c_rule 
 									ORDER BY kode_user ASC ");
 			}else{
-				$query2 = mysql_query("SELECT U.*, P.nama_petugas, R.rule 
+				$query2 = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
 									FROM t_user U, t_petugas P, user_rule R 
 									WHERE U.kode_petugas = P.kode_petugas
 									AND U.c_rule = R.c_rule 
 									ORDER BY kode_user ASC ");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -171,8 +171,8 @@
             <select name="kode_petugas" class="required">
                 <option value="nama_petugas" selected="selected"> petugas </option>
                 <?php
-                $q=mysql_query("SELECT * FROM t_petugas");
-                while($a=mysql_fetch_array($q)){
+                $q=mysqli_query($koneksi, "SELECT * FROM t_petugas");
+                while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
                 ?>
                     <option value="<?php echo $a['kode_petugas'];?>"><?php echo $a['nama_petugas'];?></option>
                 <?php
@@ -191,8 +191,8 @@
             <select name="c_rule" class="required">
                 <option value="rule" selected="selected"> rule </option>
                 <?php
-                $q=mysql_query("SELECT * FROM user_rule");
-                while($a=mysql_fetch_array($q)){
+                $q=mysqli_query("SELECT * FROM user_rule");
+                while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
                 ?>
                     <option value="<?php echo $a['c_rule'];?>"><?php echo $a['rule'];?></option>
                 <?php
@@ -212,8 +212,8 @@
 <?php
 	}elseif($aksi=='ubah'){
 		$kode=$_GET['kode_user'];
-		$q=mysql_query("SELECT * FROM t_user WHERE kode_user='$kode'");
-		$data2=mysql_fetch_array($q);
+		$q=mysqli_query($koneksi, "SELECT * FROM t_user WHERE kode_user='$kode'");
+		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -237,8 +237,8 @@
         <dd>
 		<select name="kode_petugas">
 			<?php
-			$q=mysql_query("SELECT * FROM t_petugas");
-			while($a=mysql_fetch_array($q)){
+			$q=mysqli_query($koneksi, "SELECT * FROM t_petugas");
+			while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
 			?>
             <option value="<?php echo $a['kode_petugas'];?>" <?php if($data2['kode_petugas']==$a['kode_petugas']){?>selected="selected"<?php }?>>
 <?php echo $a['nama_petugas'];?></option>
@@ -257,8 +257,8 @@
         <dd>
 		<select name="c_rule">
 			<?php
-			$q=mysql_query("SELECT * FROM user_rule");
-			while($a=mysql_fetch_array($q)){
+			$q=mysqli_query($koneksi, "SELECT * FROM user_rule");
+			while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
 			?>
             <option value="<?php echo $a['c_rule'];?>" <?php if($data2['c_rule']==$a['c_rule']){?>selected="selected"<?php }?>>
 <?php echo $a['rule'];?></option>
@@ -279,12 +279,12 @@
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_user'];
-		$q=mysql_query("SELECT U.*, P.nama_petugas, R.rule 
+		$q=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
 						FROM t_user U, t_petugas P, user_rule R 
 						WHERE U.kode_petugas = P.kode_petugas
 						AND U.c_rule = R.c_rule 
 						AND kode_user='$kode'");
-		$data2=mysql_fetch_array($q);
+		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
 <div id="box">

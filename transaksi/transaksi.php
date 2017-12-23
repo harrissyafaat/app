@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -200,19 +200,19 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT * 
+			$query = mysqli_query($koneksi, "SELECT * 
 								FROM t_anggota
 								WHERE $kategori LIKE '%$cari%'
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query=mysql_query("SELECT * FROM t_anggota 
+			$query=mysqli_query($koneksi, "SELECT * FROM t_anggota 
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query)){
 ?>
     <tbody>
     	<tr>
@@ -236,14 +236,14 @@
          <?php
             // PAGING
            if($kategori!=""){
-				$query2 = mysql_query("SELECT * 
+				$query2 = mysqli_query($koneksi, "SELECT * 
 									FROM t_anggota
 									WHERE $kategori LIKE '%$cari%'
 									ORDER BY kode_anggota ASC");
 			}else{
-				$query2 = mysql_query("SELECT * FROM t_anggota");
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_anggota");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -284,8 +284,8 @@
 <?php
 	}elseif($aksi=='simpan'){
 		$kode=$_GET['kode_anggota'];
-		$qubah=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <!-- FORM SIMPANAN -->
@@ -322,8 +322,8 @@
             <select name="kode_jenis_simpan" id="kode_jenis_simpan" onChange="show(this.value)" class="required" title="Jenis Simpan harus diisi" style="width: 200px;">
                 <option value="" selected="selected">- pilih jenis simpanan -</option>
                 <?php
-                $q=mysql_query("SELECT * FROM t_jenis_simpan");
-                while($a=mysql_fetch_array($q)){
+                $q=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan");
+                while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
                 ?>
                     <option value="<?php echo $a['kode_jenis_simpan'];?>" <?php echo $disabled;?>><?php echo $a['nama_simpanan'];?></option>
                 <?php
@@ -369,8 +369,8 @@
 	}
 	elseif($aksi=='pinjam'){
 		$kode=$_GET['kode_anggota'];
-		$qubah=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <!-- FORM PINJAAN -->
@@ -400,8 +400,8 @@
         	<select name="kode_jenis_pinjam" id="kode_jenis_pinjam" onChange="show3(this.value)" class="required" title="Jenis Pinjaman harus diisi" style="width: 200px;">
                 <option value="nama_pinjaman" selected="selected">- pilih jenis pinjaman -</option>
                 <?php
-                $q=mysql_query("SELECT * FROM t_jenis_pinjam");
-                while($a=mysql_fetch_array($q)){
+                $q=mysqli_query($koneksi, "SELECT * FROM t_jenis_pinjam");
+                while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
                 ?>
 					<option value="<?php echo $a['kode_jenis_pinjam'];?>"><?php echo $a['nama_pinjaman'];?></option>
 				<?php
@@ -441,16 +441,11 @@
 </fieldset>
 </form>
 </div>
-<script type="text/javascript">
-	function pinjam(){
-		controlWindow=window.open("tandabukti/BTP.php?kode_anggota=<?php echo $kode ?>","","toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=no,width=850,height=500");
-	}
-</script>
 <?php
 	}elseif($aksi=='angsur'){
 		$kode=$_GET['kode_anggota'];
-		$qubah=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -472,9 +467,9 @@
                 <option value="kode_pinjam" selected="selected"> - pilih kode pinjaman -</option>
                 <?php
 				$kode2=$_GET['kode_anggota'];
-				$qubah=mysql_query("SELECT P.*, A.nama_anggota FROM t_pinjam P, t_anggota A WHERE P.kode_anggota='$kode' AND P.kode_anggota = A.kode_anggota and sisa_pinjaman > 0");
+				$qubah=mysqli_query($koneksi, "SELECT P.*, A.nama_anggota FROM t_pinjam P, t_anggota A WHERE P.kode_anggota='$kode' AND P.kode_anggota = A.kode_anggota and sisa_pinjaman > 0");
                 $q=mysql_query("SELECT * FROM t_pinjam");
-                while($a=mysql_fetch_array($qubah)){
+                while($a=mysqli_fetch_array($qubah, MYSQLI_ASSOC)){
                 ?>
 					<option value="<?php echo $a['kode_pinjam'];?>"><?php echo $a['kode_pinjam'];?></option>
 				<?php

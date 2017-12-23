@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -48,7 +48,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota, T.besar_tabungan
+			$query = mysqli_query($koneksi, "SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota, T.besar_tabungan
 								FROM t_pinjam P, t_anggota A, t_tabungan T
 								WHERE $kategori LIKE '%$cari%'
 								AND P.kode_anggota = A.kode_anggota
@@ -56,7 +56,7 @@
 								GROUP BY A.nama_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota ,T.besar_tabungan
+			$query = mysqli_query($koneksi, "SELECT P.*, SUM(P.besar_pinjaman) AS total, A.kode_anggota,A.nama_anggota ,T.besar_tabungan
 								FROM t_pinjam P, t_anggota A, t_tabungan T
 								WHERE P.kode_anggota = A.kode_anggota
 								AND A.kode_tabungan = T.kode_tabungan
@@ -65,7 +65,7 @@
 		}		
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -86,18 +86,18 @@
          <?php
             // PAGING
            if($kategori!=""){
-				$query2 = mysql_query("SELECT P.*, A.nama_anggota 
+				$query2 = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 									FROM t_pinjam P, t_anggota A
 									WHERE $kategori = '%$cari%'
 									AND P.kode_anggota = A.kode_anggota
 									ORDER BY kode_pinjam ASC");
 			}else{
-				$query2 = mysql_query("SELECT P.*, A.nama_anggota 
+				$query2 = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 									FROM t_pinjam P, t_anggota A
 									WHERE P.kode_anggota = A.kode_anggota
 									ORDER BY kode_pinjam ASC");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -138,9 +138,9 @@
 <?php 
 	}elseif($aksi=='show'){
 	$kode=$_GET['kode_anggota'];
-	$q=mysql_query("SELECT P.*, A.nama_anggota FROM t_pinjam P, t_anggota A
+	$q=mysqli_query($koneksi, "SELECT P.*, A.nama_anggota FROM t_pinjam P, t_anggota A
 					WHERE P.kode_anggota = A.kode_anggota AND P.kode_anggota = '$kode'");
-	$ang=mysql_fetch_array($q);
+	$ang=mysqli_fetch_array($q);
 ?>
 
 <div id="box">
@@ -177,7 +177,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT P.*, A.nama_anggota 
+			$query = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 								FROM t_pinjam P, t_anggota A
 								WHERE $kategori LIKE '%$cari%'
 								AND P.kode_anggota = '$kode'
@@ -185,7 +185,7 @@
 								ORDER BY kode_pinjam ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT P.*, A.nama_anggota 
+			$query = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 								FROM t_pinjam P, t_anggota A
 								WHERE P.kode_anggota = '$kode'
 								AND P.kode_anggota = A.kode_anggota
@@ -194,7 +194,7 @@
 		}
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query)){
 ?>
     <tbody>
     	<tr>
@@ -216,20 +216,20 @@
          <?php
             // PAGING
            if($kategori!=""){
-				$query2 = mysql_query("SELECT P.*, A.nama_anggota 
+				$query2 = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 									FROM t_pinjam P, t_anggota A
 									WHERE $kategori LIKE '%$cari%'
 									AND P.kode_anggota = '$kode'
 									AND P.kode_anggota = A.kode_anggota
 									ORDER BY kode_pinjam ASC ");
 			}else{
-				$query2 = mysql_query("SELECT P.*, A.nama_anggota 
+				$query2 = mysqli_query($koneksi, "SELECT P.*, A.nama_anggota 
 									FROM t_pinjam P, t_anggota A
 									WHERE P.kode_anggota = '$kode'
 									AND P.kode_anggota = A.kode_anggota
 									ORDER BY kode_pinjam ASC ");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link

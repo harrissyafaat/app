@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET[aksi];
@@ -34,8 +34,8 @@
     </thead>
 <?php
 $no=1;
-$sql=mysql_query("SELECT * FROM t_jenis_pinjam");
-while($data=mysql_fetch_array($sql)){
+$sql=mysqli_query($koneksi, "SELECT * FROM t_jenis_pinjam");
+while($data=mysqli_fetch_array($sql, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -99,8 +99,8 @@ while($data=mysql_fetch_array($sql)){
 <?php
 	}elseif($aksi=='ubah'){
 		$kode=$_GET['kode_jenis_pinjam'];
-		$q=mysql_query("SELECT * FROM t_jenis_pinjam WHERE kode_jenis_pinjam='$kode'");
-		$data2=mysql_fetch_array($q);
+		$q=mysqli_query($koneksi, "SELECT * FROM t_jenis_pinjam WHERE kode_jenis_pinjam='$kode'");
+		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -142,13 +142,13 @@ while($data=mysql_fetch_array($sql)){
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_jenis_pinjam'];
-		$q=mysql_query("SELECT * FROM t_jenis_pinjam WHERE kode_jenis_pinjam='$kode'");
-		$data2=mysql_fetch_array($q);
+		$q=mysqli_query($koneksi, "SELECT * FROM t_jenis_pinjam WHERE kode_jenis_pinjam='$kode'");
+		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
 <h3 id="adduser">Hapus Data Pinjaman</h3>
-<form action="setting/proses_setting_pinjam.php?pros=ubah" method="post" id="form">
+<form action="setting/proses_setting_pinjam.php?pros=hapus" method="post" id="form">
 <fieldset>
 	<dl>
 		<dt><label for="kode_jenis_pinjam">Kode Pinjaman :</label></dt>

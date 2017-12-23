@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -57,18 +57,18 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT * 
+			$query = mysqli_query($koneksi, "SELECT * 
 								FROM t_petugas
 								WHERE $kategori LIKE '%$cari%'
 								ORDER BY kode_petugas ASC 
 								LIMIT $posisi, $batas");
 		}else{
-		$query=mysql_query("SELECT * FROM t_petugas 
+		$query=mysqli_query($koneksi, "SELECT * FROM t_petugas 
 							ORDER BY kode_petugas ASC 
 							LIMIT $posisi, $batas");
 		}
 	$no=$posisi+1;
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -91,16 +91,16 @@
          <?php
             // PAGING
 			if($kategori!=""){
-				$query2 = mysql_query("SELECT * 
+				$query2 = mysqli_query($koneksi, "SELECT * 
 									FROM t_petugas
 									WHERE $kategori LIKE '%$cari%'
 									ORDER BY kode_petugas ASC");
 			}else{
-				$query2 = mysql_query("SELECT * 
+				$query2 = mysqli_query($koneksi, "SELECT * 
 									FROM t_petugas
 									ORDER BY kode_petugas ASC");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -188,8 +188,8 @@
 <?php
 	}elseif($aksi=='ubah'){
 		$kode=$_GET['kode_petugas'];
-		$qubah=mysql_query("SELECT * FROM t_petugas WHERE kode_petugas='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_petugas WHERE kode_petugas='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -240,8 +240,8 @@
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_petugas'];
-		$qhapus=mysql_query("SELECT * FROM t_petugas WHERE kode_petugas='$kode'");
-		$data3=mysql_fetch_array($qhapus);
+		$qhapus=mysqli_query($koneksi, "SELECT * FROM t_petugas WHERE kode_petugas='$kode'");
+		$data3=mysqli_fetch_array($qhapus, MYSQLI_ASSOC);
 ?>
 
 <div id="box">

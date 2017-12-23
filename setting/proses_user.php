@@ -1,5 +1,5 @@
 <?php
-	include "../config/koneksi.php";
+	include "../config/conn.php";
 	
 	$pros=$_GET[pros];
 	
@@ -14,13 +14,13 @@
 	switch ($pros){
 		case "tambah" :
 			if($pros=='tambah'){
-				$qtambah=mysql_query("INSERT INTO t_user VALUES('$kode_user','$kode_petugas','$c_rule','$username','$password','$tgl_entri');");
+				$qtambah=mysqli_query($koneksi "INSERT INTO t_user VALUES('$kode_user','$username','$password', '$kode_petugas', '$tgl_entri', '$c_rule');");
 			}
 			header("location:../index.php?pilih=4.3");
 		break;
 		
 		case "ubah" :
-			$qubah=mysql_query("UPDATE t_user SET username='$username',password='$password',kode_petugas='$kode_petugas',tgl_entri='$tgl_entri',c_rule='$c_rule' WHERE kode_user='$kode_user'");
+			$qubah=mysqli_query($koneksi, "UPDATE t_user SET username='$username',password='$password',kode_petugas='$kode_petugas',tgl_entri='$tgl_entri',c_rule='$c_rule' WHERE kode_user='$kode_user'");
 			if($qubah){
 				header("location:../index.php?pilih=4.3");
 			}else{
@@ -29,7 +29,7 @@
 		break;
 		
 		case "hapus" :
-			$qdelete=mysql_query("DELETE FROM t_user WHERE kode_user='$kode_user'");
+			$qdelete=mysqli_query($koneksi, "DELETE FROM t_user WHERE kode_user='$kode_user'");
 			if($qdelete){
 				header("location:../index.php?pilih=4.3");
 			}else{

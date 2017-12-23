@@ -8,7 +8,7 @@ header("Cache-Control: private");
 header("Content-Type: application/vnd.ms-word; name='word'");
 header("Content-disposition: attachment; filename=LapSimpanan.doc");
 
-	include "../config/koneksi.php";
+	include "../config/conn.php";
 	include "../fungsi/fungsi.php";
 	
 	$bulan = explode(" ","Januari Februari Maret April Mei Juni Juli September Oktober November Desember");
@@ -35,38 +35,38 @@ header("Content-disposition: attachment; filename=LapSimpanan.doc");
 	</tr>
 <?php
 
-$query = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
+$query = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
 					FROM t_simpan S, t_anggota A, t_jenis_simpan J
 					WHERE S.kode_anggota = A.kode_anggota
 					AND S.kode_jenis_simpan = J.kode_jenis_simpan
 					GROUP BY A.kode_anggota");
 $no=1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query)){
 		$kode=$data['kode_anggota'];
-		$query1=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query1=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND S.kode_jenis_simpan='S0001'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qpokok=mysql_fetch_array($query1);
+		$qpokok=mysqli_fetch_array($query1);
 		
-		$query2=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query2=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND  S.kode_jenis_simpan='S0002'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qwajib=mysql_fetch_array($query2);
+		$qwajib=mysqli_fetch_array($query2);
 		
-		$query3=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query3=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND  S.kode_jenis_simpan='S0003'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qsukarela=mysql_fetch_array($query3);
+		$qsukarela=mysqli_fetch_array($query3);
 		
 		$total = $qpokok['total'] + $qwajib['total'] + $qsukarela['total'];
 

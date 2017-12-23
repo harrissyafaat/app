@@ -1,5 +1,5 @@
 <?php
-	include "../config/koneksi.php";
+	include "../config/conn.php";
 	
 	$pros=$_GET[pros];
 	
@@ -14,13 +14,13 @@
 	switch ($pros){
 		case "tambah" :
 			if($pros=='tambah'){
-				$qtambah=mysql_query("INSERT INTO t_petugas values('$kode_petugas','$nama_petugas','$alamat_petugas','$telp','$jenis_kelamin','$u_entry','$tgl_entri');");
+				$qtambah=mysqli_query($koneksi, "INSERT INTO t_petugas values('$kode_petugas','$nama_petugas','$alamat_petugas','$telp','$jenis_kelamin','$u_entry','$tgl_entri');");
 			}
 			header("location:../index.php?pilih=1.1");
 		break;
 		
 		case "ubah" :
-			$qubah=mysql_query("UPDATE t_petugas SET nama_petugas='$nama_petugas',alamat_petugas='$alamat_petugas',telp='$telp',jenis_kelamin='$jenis_kelamin',u_entry='$u_entry',tgl_entri='$tgl_entri' WHERE kode_petugas='$kode_petugas'");
+			$qubah=mysqli_query($koneksi, "UPDATE t_petugas SET nama_petugas='$nama_petugas',alamat_petugas='$alamat_petugas',telp='$telp',jenis_kelamin='$jenis_kelamin',u_entry='$u_entry',tgl_entri='$tgl_entri' WHERE kode_petugas='$kode_petugas'");
 
 			if($qubah){
 				header("location:../index.php?pilih=1.1");
@@ -30,7 +30,7 @@
 		break;
 		
 		case "hapus" :
-			$qdelete=mysql_query("DELETE FROM t_petugas WHERE kode_petugas='$kode_petugas'");
+			$qdelete=mysqli_query($koneksi, 	"DELETE FROM t_petugas WHERE kode_petugas='$kode_petugas'");
 			if($qdelete){
 				header("location:../index.php?pilih=1.1");
 			}else{

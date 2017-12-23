@@ -8,7 +8,7 @@ header("Cache-Control: private");
 header("Content-Type: application/vnd.ms-word; name='word'");
 header("Content-disposition: attachment; filename=LapAnggota.doc");
 
-	include "../config/koneksi.php";
+	include "../config/conn.php";
 	include "../fungsi/fungsi.php";
 
 	$bulan = explode(" ","Januari Februari Maret April Mei Juni Juli September Oktober November Desember");
@@ -40,8 +40,8 @@ header("Content-disposition: attachment; filename=LapAnggota.doc");
 		</thead>	
 <?php
 	$no=1;
-	$a=mysql_query("SELECT * FROM t_anggota");
-	while($data=mysql_fetch_array($a)){
+	$a=mysqli_query($koneksi, "SELECT * FROM t_anggota");
+	while($data=mysqli_fetch_array($a, MYSQLI_ASSOC)){
 ?>
 		<tr>
 			<td align="center"><?php echo $no++;?></td>

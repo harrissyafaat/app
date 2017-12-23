@@ -8,7 +8,7 @@ header("Cache-Control: private");
 header("Content-Type: application/vnd.ms-excel; name='excel'");
 header("Content-disposition: attachment; filename=Data Anggota.xls");
  
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET[aksi];
@@ -63,13 +63,13 @@ header("Content-disposition: attachment; filename=Data Anggota.xls");
 		}else{
 			$posisi=($halaman-1)*$batas;
 		}
-		$query=mysql_query("SELECT * FROM t_anggota 
+		$query=mysql_query($koneksi, "SELECT * FROM t_anggota 
 							WHERE nama_anggota like '%".$cari."%' 
 							ORDER BY kode_anggota ASC 
 							LIMIT $posisi, $batas");
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -92,8 +92,8 @@ header("Content-disposition: attachment; filename=Data Anggota.xls");
             <td colspan="12">
          <?php
             // PAGING
-            $query2=mysql_query("SELECT * FROM t_anggota WHERE nama_anggota like '%".$cari."%'");
-            $jmldata=mysql_num_rows($query2);
+            $query2=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE nama_anggota like '%".$cari."%'");
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link

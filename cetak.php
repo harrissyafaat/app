@@ -1,13 +1,13 @@
 	<?php
 	// http://achmatim.net/2009/11/29/step-by-step-php-membuat-laporan-pdf-dengan-fpdf/#codesyntax_2
 	
-	include "config/koneksi.php";
+	include "config/conn.php";
      
     #ambil data di tabel dan masukkan ke array
     $query = "SELECT * FROM t_anggota ORDER BY nama_anggota";
-    $sql = mysql_query ($query);
+    $sql = mysqli_query ($koneksi, $query);
     $data = array();
-    while ($row = mysql_fetch_assoc($sql)) {
+    while ($row = mysqli_fetch_assoc($sql)) {
     array_push($data, $row);
     }
      
@@ -59,5 +59,6 @@
      
     #output file PDF
     $pdf->Output();
-    ?> Enter code here
+    ?> 
+    <!-- Enter code here -->
 

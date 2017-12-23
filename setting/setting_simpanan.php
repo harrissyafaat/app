@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET[aksi];
@@ -32,8 +32,8 @@
     </thead>
 <?php
 $no=1;
-$sql=mysql_query("SELECT * FROM t_jenis_simpan");
-while($data=mysql_fetch_array($sql)){
+$sql=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan");
+while($data=mysqli_fetch_array($sql, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -92,8 +92,8 @@ while($data=mysql_fetch_array($sql)){
 <?php
 	}elseif($aksi=='ubah'){
 		$kode=$_GET['kode_jenis_simpan'];
-		$qubah=mysql_query("SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -118,7 +118,7 @@ while($data=mysql_fetch_array($sql)){
     </dl>
 	 <dl>
         <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo("Y-m-d");?>" readonly=""/></dd>
+        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly=""/></dd>
     </dl><br>
     <div align="center">
     	<input type="submit" name="ubah" id="button1" value="Ubah" />
@@ -131,8 +131,8 @@ while($data=mysql_fetch_array($sql)){
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_jenis_simpan'];
-		$qubah=mysql_query("SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <div id="box">

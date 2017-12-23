@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "../config/koneksi.php";
+include "../config/conn.php";
 
 // Dikirim dari form
 $username=$_POST['username'];
@@ -13,9 +13,9 @@ $password = stripslashes($password);
 $username = mysql_real_escape_string($username);
 $password = mysql_real_escape_string($password);
 
-$query=mysql_query("SELECT * FROM t_user WHERE username='$username' AND password='$password'");
-$jumlah=mysql_num_rows($query);
-$a=mysql_fetch_array($query);
+$query=mysqli_query($koneksi, "SELECT * FROM t_user WHERE username='$username' AND password='$password'");
+$jumlah=mysqli_num_rows($query);
+$a=mysqli_fetch_array($query, MYSQLI_ASSOC);
 
 if($jumlah > 0){
 	$_SESSION['kopid']=$a['kode_user'];

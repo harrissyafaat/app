@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -52,18 +52,18 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT * 
+			$query = mysqli_query($koneksi, "SELECT * 
 								FROM t_anggota
 								WHERE $kategori LIKE '%$cari%'
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT * FROM t_anggota 
+			$query = mysqli_query($koneksi, "SELECT * FROM t_anggota 
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}
 	$no=$posisi+1;
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -84,14 +84,14 @@
          <?php
             // PAGING
 			if($kategori!=""){
-				$query2 = mysql_query("SELECT * 
+				$query2 = mysqli_query($koneksi, "SELECT * 
 									FROM t_anggota
 									WHERE $kategori LIKE '%$cari%'
 									ORDER BY kode_anggota ASC");
 			}else{
-				$query2 = mysql_query("SELECT * FROM t_anggota");
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_anggota");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -131,6 +131,7 @@
 		<a href="laporan/cetak_laporan_anggota.php"><img src="images/cetak_word.png" width="32" height="32" title="cetak kartu anggota"></a>
 		<a href="#"><img src="images/cetak_excel.png" width="32" height="32" title="cetak kartu anggota"></a>
 		<a href="cetak.php"><img src="images/cetak_pdf.png" width="32" height="32" title="cetak kartu anggota"></a>
+		<br>
 		<input type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
 	</div>
 </div>

@@ -1,17 +1,17 @@
  <meta http-equiv="refresh" content="1">
 <body onload="">
 <?php
-include "../config/koneksi.php";
+include "../config/conn.php";
 include "../fungsi/fungsi.php";
 ?>
 
 <?php
 
 $kode=$_GET['kode_anggota'];
-$query=mysql_query("SELECT * 
+$query=mysqli_query($koneksi, "SELECT * 
                     FROM t_anggota
                     WHERE kode_anggota = '$kode'");
-while($data=mysql_fetch_array($query)){
+while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
 	<table>
     	<tr>

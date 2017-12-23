@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -68,19 +68,19 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT * 
+			$query = mysqli_query($koneksi, "SELECT * 
 								FROM t_anggota
 								WHERE $kategori LIKE '%$cari%'
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query=mysql_query("SELECT * FROM t_anggota 
+			$query=mysqli_query($koneksi, "SELECT * FROM t_anggota 
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -104,14 +104,14 @@
          <?php
             // PAGING
            if($kategori!=""){
-				$query2 = mysql_query("SELECT * 
+				$query2 = mysqli_query($koneksi, "SELECT * 
 									FROM t_anggota
 									WHERE $kategori LIKE '%$cari%'
 									ORDER BY kode_anggota ASC");
 			}else{
-				$query2 = mysql_query("SELECT * FROM t_anggota");
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_anggota");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -151,8 +151,8 @@
     
 <?php
 	}elseif($aksi=='tambah'){
-		$query=mysql_query("SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='S0001'");
-		$data=mysql_fetch_array($query);
+		$query=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='S0001'");
+		$data=mysqli_fetch_array($query, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -230,8 +230,8 @@
 <?php
 	}elseif($aksi=='ubah'){
 		$kode=$_GET['kode_anggota'];
-		$qubah=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
-		$data2=mysql_fetch_array($qubah);
+		$qubah=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
+		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -309,8 +309,8 @@
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_anggota'];
-		$qhapus=mysql_query("SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
-		$data3=mysql_fetch_array($qhapus);
+		$qhapus=mysqli_query($koneksi, "SELECT * FROM t_anggota WHERE kode_anggota='$kode'");
+		$data3=mysqli_fetch_array($qhapus, MYSQLI_ASSOC);
 ?>
 
 <div id="box">
@@ -377,10 +377,10 @@
 <?php
 }elseif($aksi=='cetak'){
 $kode=$_GET['kode_anggota'];
-$query=mysql_query("SELECT * 
+$query=mysqli_query($koneksi, "SELECT * 
 					FROM t_anggota
 					WHERE kode_anggota = '$kode'");
-$data=mysql_fetch_array($query);
+$data=mysqli_fetch_array($query, MYSQLI_ASSOC);
 ?>
 <table>
 	<tr>

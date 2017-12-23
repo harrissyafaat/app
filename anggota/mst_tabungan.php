@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$kategori = ($kategori=$_POST['kategori'])?$kategori : $_GET['kategori'];
@@ -50,21 +50,21 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT A.nama_anggota, T.* 
+			$query = mysqli_query($koneksi, "SELECT A.nama_anggota, T.* 
 								FROM t_anggota A, t_tabungan T
 								WHERE $kategori LIKE '%$cari%'
 								AND A.kode_tabungan = T.kode_tabungan
 								ORDER BY kode_anggota ASC 
 								LIMIT $posisi, $batas");
 		}else{
-		$query=mysql_query("SELECT A.nama_anggota, T.* 
+		$query=mysqli_query($koneksi, "SELECT A.nama_anggota, T.* 
 							FROM t_anggota A, t_tabungan T
 							WHERE A.kode_tabungan = T.kode_tabungan
 							ORDER BY kode_anggota ASC 
 							LIMIT $posisi, $batas");
 		}
 	$no=$posisi+1;
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
     <tbody>
     	<tr>
@@ -82,18 +82,18 @@
          <?php
             // PAGING
 			if($kategori!=""){
-				$query2 = mysql_query("SELECT A.nama_anggota, T.* 
+				$query2 = mysqli_query($koneksi, "SELECT A.nama_anggota, T.* 
 									FROM t_anggota A, t_tabungan T
 									WHERE $kategori LIKE '%$cari%'
 									AND A.kode_tabungan = T.kode_tabungan
 									ORDER BY kode_anggota ASC");
 			}else{
-				$query2 = mysql_query("SELECT A.nama_anggota, T.* 
+				$query2 = mysqli_query($koneksi, "SELECT A.nama_anggota, T.* 
 									FROM t_anggota A, t_tabungan T
 									WHERE A.kode_tabungan = T.kode_tabungan
 									ORDER BY kode_anggota ASC");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link

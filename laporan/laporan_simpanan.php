@@ -1,5 +1,5 @@
 <?php 
-	include "config/koneksi.php";
+	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
 	$aksi=$_GET['aksi'];
@@ -54,7 +54,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
+			$query = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE $kategori LIKE '%$cari%'
 								AND S.kode_anggota = A.kode_anggota
@@ -62,7 +62,7 @@
 								GROUP BY A.kode_anggota 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
+			$query = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE S.kode_anggota = A.kode_anggota
 								AND S.kode_jenis_simpan = J.kode_jenis_simpan
@@ -71,31 +71,31 @@
 		}
 		$no=$posisi+1;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query)){
 		$kode=$data['kode_anggota'];
-		$query1=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query1=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND S.kode_jenis_simpan='S0001'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qpokok=mysql_fetch_array($query1);
+		$qpokok=mysqli_fetch_array($query1);
 		
-		$query2=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query2=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND  S.kode_jenis_simpan='S0002'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qwajib=mysql_fetch_array($query2);
+		$qwajib=mysqli_fetch_array($query2);
 		
-		$query3=mysql_query("SELECT S.*,SUM(S.besar_simpanan) AS total
+		$query3=mysqli_query($koneksi, "SELECT S.*,SUM(S.besar_simpanan) AS total
 							FROM t_simpan S, t_anggota A
 							WHERE S.kode_anggota=A.kode_anggota
 							AND  S.kode_jenis_simpan='S0003'
 							AND A.kode_anggota='$kode'
 							GROUP BY A.kode_anggota");
-		$qsukarela=mysql_fetch_array($query3);
+		$qsukarela=mysqli_fetch_array($query3);
 		
 		$total = $qpokok['total'] + $qwajib['total'] + $qsukarela['total'];
 		//echo $qwajib;echo $data['kode_anggota'];
@@ -122,20 +122,20 @@
          <?php
             // PAGING
             if($kategori!=""){
-				$query2 = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
+				$query2 = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE $kategori LIKE '%$cari%'
 								AND S.kode_anggota = A.kode_anggota
 								AND S.kode_jenis_simpan = J.kode_jenis_simpan
 								GROUP BY A.kode_anggota");
 			}else{
-				$query2 = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
+				$query2 = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan, J.besar_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE S.kode_anggota = A.kode_anggota
 								AND S.kode_jenis_simpan = J.kode_jenis_simpan
 								GROUP BY A.kode_anggota");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
@@ -175,9 +175,9 @@
 <?php
 	}elseif($aksi=='show'){
 	$kode=$_GET['kode_anggota'];
-	$q=mysql_query("SELECT S.*, A.nama_anggota FROM t_simpan S, t_anggota A
+	$q=mysqli_query($koneksi, "SELECT S.*, A.nama_anggota FROM t_simpan S, t_anggota A
 					WHERE S.kode_anggota = A.kode_anggota AND S.kode_anggota = '$kode'");
-	$ang=mysql_fetch_array($q);
+	$ang=mysqli_fetch_array($q);
 ?>
 
 <div id="box">
@@ -211,7 +211,7 @@
 			$posisi=($halaman-1)*$batas;
 		}
 		if($kategori!=""){
-			$query = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan
+			$query = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE $kategori LIKE '%$cari%'
 								AND S.kode_anggota = '$kode'
@@ -220,7 +220,7 @@
 								ORDER BY kode_simpan ASC 
 								LIMIT $posisi, $batas");
 		}else{
-			$query = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan
+			$query = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE S.kode_anggota = '$kode'
 								AND S.kode_anggota = A.kode_anggota
@@ -231,7 +231,7 @@
 		$no=$posisi+1;
 		//echo $kode;
 		
-	while($data=mysql_fetch_array($query)){
+	while($data=mysqli_fetch_array($query)){
 ?>
     <tbody>
     	<tr>
@@ -250,7 +250,7 @@
          <?php
             // PAGING
             if($kategori!=""){
-				$query2 = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan
+				$query2 = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan
 								FROM t_simpan S, t_anggota A, t_jenis_simpan J
 								WHERE $kategori LIKE '%$cari%'
 								AND S.kode_anggota = '$kode'
@@ -258,14 +258,14 @@
 								AND S.kode_jenis_simpan = J.kode_jenis_simpan
 								ORDER BY kode_simpan ASC");
 			}else{
-				$query2 = mysql_query("SELECT S.*, A.nama_anggota, J.nama_simpanan
+				$query2 = mysqli_query($koneksi, "SELECT S.*, A.nama_anggota, J.nama_simpanan
 									FROM t_simpan S, t_anggota A, t_jenis_simpan J
 									WHERE S.kode_anggota = '$kode'
 									AND S.kode_anggota = A.kode_anggota
 									AND S.kode_jenis_simpan = J.kode_jenis_simpan
 									ORDER BY kode_simpan ASC");
 			}
-            $jmldata=mysql_num_rows($query2);
+            $jmldata=mysqli_num_rows($query2);
             $jmlhalaman=ceil($jmldata/$batas);
 			
                 // previous link
