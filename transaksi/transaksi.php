@@ -5,6 +5,8 @@
 	$aksi=$_GET['aksi'];
 	$kategori = ($kategori=$_POST['kategori'])?$kategori : $_GET['kategori'];
 	$cari = ($cari = $_POST['input_cari'])? $cari: $_GET['input_cari'];
+
+	$kd_anggota = $_GET['kode_anggota'];
 ?>
 
 <link rel="stylesheet" type="text/css" href="css/theme1.css" />
@@ -164,9 +166,12 @@
 	if(empty($aksi)){
 ?>
 <body>  
-         	            
+
+<!-- TABEL ANGGOTA -->
+	            
 <div id="box">
 <h3>Transaksi</h3>
+
 
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
     <select name="kategori">
@@ -189,30 +194,30 @@
        	</tr>	
     </thead>
 <?php
+if ($_GET['aksi'] == ""){
+	$batas=10;
+	$halaman=$_GET['halaman'];
+	if(empty($halaman)){
+		$posisi=0;
+		$halaman=1;
+	}else{
+		$posisi=($halaman-1)*$batas;
+	}
+	if($kategori!=""){
+		$query = mysqli_query($koneksi, "SELECT * 
+						FROM t_anggota
+						WHERE $kategori LIKE '%$cari%'
+						ORDER BY kode_anggota ASC 
+						LIMIT $posisi, $batas");
+	} else {
+		$query=mysqli_query($koneksi, "SELECT * FROM t_anggota 
+						ORDER BY kode_anggota ASC 
+						LIMIT $posisi, $batas");
+	}
+	$no=$posisi+1;
 
-		// PAGING
-		$batas=10;
-		$halaman=$_GET['halaman'];
-		if(empty($halaman)){
-			$posisi=0;
-			$halaman=1;
-		}else{
-			$posisi=($halaman-1)*$batas;
-		}
-		if($kategori!=""){
-			$query = mysqli_query($koneksi, "SELECT * 
-								FROM t_anggota
-								WHERE $kategori LIKE '%$cari%'
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}else{
-			$query=mysqli_query($koneksi, "SELECT * FROM t_anggota 
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}
-		$no=$posisi+1;
-		
 	while($data=mysqli_fetch_array($query)){
+
 ?>
     <tbody>
     	<tr>
@@ -274,11 +279,14 @@
 				 if ($jmldata != 0){
 					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
 				}
-	
             ?>
             </td>
         </tr>
 	</table>
+	<?php } ?>
+
+
+
 	</div>
     
 <?php
@@ -364,6 +372,121 @@
 </fieldset>
 </form>
 </div>
+
+<br>
+<!-- DATA SIMPANAN -->
+<div id="box">
+	<h3>Data Simpanan</h3>
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+    <select name="kategori">
+        <option value="" selected="selected" disabled="disabled">Pilih Anggota</option>
+        <option value="kode_jenis_simpan">Kode Jenis Simpanan</option>
+    </select> 
+    <input type="text" name="input_cari" value="<?php echo $cari;?>"><input type="submit" value="Cari">
+</form>             
+
+<table width="100%">
+    <thead>
+		<tr>
+             <th><a href="#">No</a></th>
+             <th><a href="#">Tanggal Entri</a></th>
+             <th><a href="#">Jenis Simpanan</a></th>
+             <th><a href="#">Nominal</a></th>
+             <th colspan="3"><a href="">Aksi</a></th>
+       	</tr>	
+    </thead>
+<?php
+if ($_GET['aksi'] == "simpan"){
+	$batas=10;
+	$halaman=$_GET['halaman'];
+	if(empty($halaman)){
+		$posisi=0;
+		$halaman=1;
+	}else{
+		$posisi=($halaman-1)*$batas;
+	}
+	if($kategori!=""){
+		$query = mysqli_query($koneksi, "SELECT * 
+						FROM t_simpan
+						WHERE $kategori LIKE '%$cari%' AND kode_anggota='$kd_anggota'
+						ORDER BY kode_simpan ASC 
+						LIMIT $posisi, $batas");
+	} else {
+		$query=mysqli_query($koneksi, "SELECT * FROM t_simpan 
+						WHERE kode_anggota='$kd_anggota'
+						ORDER BY kode_simpan ASC 
+						LIMIT $posisi, $batas");
+	}
+	$no=$posisi+1;
+
+	while($data=mysqli_fetch_array($query)){
+
+?>
+    <tbody>
+    	<tr>
+			<td><?php echo $no++;?></td>
+            <td align="center"><?php echo $data['tgl_entri'];?></td>
+            <td><?php echo $data['kode_jenis_simpan'];?></td>
+            <td><?php echo $data['besar_simpanan'];?></td>
+            <td align="center">
+	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+			</td>
+        </tr> 
+	</tbody>   
+<?php
+	} //tutup while
+?>
+	<tr class="paging">
+            <td colspan="12">
+         <?php
+            // PAGING
+           if($kategori!=""){
+				$query2 = mysqli_query($koneksi, "SELECT * 
+									FROM t_simpan
+									WHERE $kategori LIKE '%$cari%'
+									ORDER BY kode_simpan ASC");
+			}else{
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_simpan WHERE kode_anggota='$kd_anggota'");
+			}
+            $jmldata=mysqli_num_rows($query2);
+            $jmlhalaman=ceil($jmldata/$batas);
+			
+                // previous link
+				if($halaman == 1){ 
+					echo '<span class="prn">&lt; Previous</span>&nbsp;';
+                }else{
+					$i = $halaman-1;
+					echo '<a href="?pilih=2.1&aksi=simpan&kode_anggota='.$kd_anggota.'&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
+					echo '<span class="prn">...</span>&nbsp;';
+				}	
+                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
+                    if(($halaman) == $i){ 
+                        echo '<span>'.$i.'</span>&nbsp;'; 
+                    }else{ 
+                        echo '<a href=?pilih=2.1&aksi=simpan&kode_anggota='.$kd_anggota.'&halaman='.$i.'>'.$i.'</a>';
+                    } 
+                } 
+				
+                // next link 
+                if($halaman < $jmlhalaman){ 
+                    $next = ($halaman + 1); 
+					echo '<span class="prn">...</span>&nbsp;';
+                    echo '<a href=?pilih=2.1&aksi=simpan&kode_anggota='.$kd_anggota.'&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
+                }else {
+					echo '<span class="prn">Next &gt;</span>&nbsp;';
+				}
+				
+				 if ($jmldata != 0){
+					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
+				}
+            ?>
+            </td>
+        </tr>
+	</table>
+	<?php } ?>
+</div>
+
+
 <?php
 
 	}
@@ -441,6 +564,121 @@
 </fieldset>
 </form>
 </div>
+<!-- DATA PINJAMAN -->
+<br>
+<div id="box">
+	<h3>Data Pinjaman</h3>
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+    <select name="kategori">
+        <option value="" selected="selected" disabled="disabled">Pilih Anggota</option>
+        <option value="kode_jenis_pinjam">Kode Jenis Pinjam</option>
+    </select> 
+    <input type="text" name="input_cari" value="<?php echo $cari;?>"><input type="submit" value="Cari">
+</form>             
+
+<table width="100%">
+    <thead>
+		<tr>
+             <th><a href="#">No</a></th>
+             <th><a href="#">Tanggal Entri</a></th>
+             <th><a href="#">Jenis Simpanan</a></th>
+             <th><a href="#">Nominal</a></th>
+             <th colspan="3"><a href="">Aksi</a></th>
+       	</tr>	
+    </thead>
+<?php
+if ($_GET['aksi'] == "pinjam"){
+	$batas=10;
+	$halaman=$_GET['halaman'];
+	if(empty($halaman)){
+		$posisi=0;
+		$halaman=1;
+	}else{
+		$posisi=($halaman-1)*$batas;
+	}
+	if($kategori!=""){
+		$query = mysqli_query($koneksi, "SELECT * 
+						FROM t_pinjam
+						WHERE $kategori LIKE '%$cari%' AND kode_anggota='$kd_anggota'
+						ORDER BY kode_pinjam ASC 
+						LIMIT $posisi, $batas");
+	} else {
+		$query=mysqli_query($koneksi, "SELECT * FROM t_pinjam 
+						WHERE kode_anggota='$kd_anggota'
+						ORDER BY kode_pinjam ASC 
+						LIMIT $posisi, $batas");
+	}
+	$no=$posisi+1;
+
+	while($data=mysqli_fetch_array($query)){
+
+?>
+    <tbody>
+    	<tr>
+			<td><?php echo $no++;?></td>
+            <td align="center"><?php echo $data['tgl_entri'];?></td>
+            <td><?php echo $data['kode_jenis_pinjam'];?></td>
+            <td><?php echo $data['besar_pinjaman'];?></td>
+            <td align="center">
+	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+			</td>
+        </tr> 
+	</tbody>   
+<?php
+	} //tutup while
+?>
+	<tr class="paging">
+            <td colspan="12">
+         <?php
+            // PAGING
+           if($kategori!=""){
+				$query2 = mysqli_query($koneksi, "SELECT * 
+									FROM t_pinjam
+									WHERE $kategori LIKE '%$cari%'
+									ORDER BY kode_pinjam ASC");
+			}else{
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_pinjam WHERE kode_anggota='$kd_anggota'");
+			}
+            $jmldata=mysqli_num_rows($query2);
+            $jmlhalaman=ceil($jmldata/$batas);
+			
+                // previous link
+				if($halaman == 1){ 
+					echo '<span class="prn">&lt; Previous</span>&nbsp;';
+                }else{
+					$i = $halaman-1;
+					echo '<a href="?pilih=2.1&aksi=pinjam&kode_anggota='.$kd_anggota.'&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
+					echo '<span class="prn">...</span>&nbsp;';
+				}	
+                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
+                    if(($halaman) == $i){ 
+                        echo '<span>'.$i.'</span>&nbsp;'; 
+                    }else{ 
+                        echo '<a href=?pilih=2.1&aksi=pinjam&kode_anggota='.$kd_anggota.'&halaman='.$i.'>'.$i.'</a>';
+                    } 
+                } 
+				
+                // next link 
+                if($halaman < $jmlhalaman){ 
+                    $next = ($halaman + 1); 
+					echo '<span class="prn">...</span>&nbsp;';
+                    echo '<a href=?pilih=2.1&aksi=pinjam&kode_anggota='.$kd_anggota.'&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
+                }else {
+					echo '<span class="prn">Next &gt;</span>&nbsp;';
+				}
+				
+				 if ($jmldata != 0){
+					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
+				}
+            ?>
+            </td>
+        </tr>
+	</table>
+	<?php } ?>
+</div>
+
+
+<!-- FORM ANGSURAN -->
 <?php
 	}elseif($aksi=='angsur'){
 		$kode=$_GET['kode_anggota'];
@@ -521,6 +759,117 @@
 	</div>
 </fieldset>
 </form>
+</div>
+
+<div id="box">
+	<h3>Data Angsuran</h3>
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+    <select name="kategori">
+        <option value="" selected="selected" disabled="disabled">Pilih Anggota</option>
+        <option value="kode_jenis_angsur">Kode Jenis Pinjaman</option>
+    </select> 
+    <input type="text" name="input_cari" value="<?php echo $cari;?>"><input type="submit" value="Cari">
+</form>             
+
+<table width="100%">
+    <thead>
+		<tr>
+             <th><a href="#">No</a></th>
+             <th><a href="#">Tanggal Entri</a></th>
+             <th><a href="#">Jenis Simpanan</a></th>
+             <th><a href="#">Nominal</a></th>
+             <th colspan="3"><a href="">Aksi</a></th>
+       	</tr>	
+    </thead>
+<?php
+if ($_GET['aksi'] == "angsur"){
+	$batas=10;
+	$halaman=$_GET['halaman'];
+	if(empty($halaman)){
+		$posisi=0;
+		$halaman=1;
+	}else{
+		$posisi=($halaman-1)*$batas;
+	}
+	if($kategori!=""){
+		$query = mysqli_query($koneksi, "SELECT * 
+						FROM t_angsur
+						WHERE $kategori LIKE '%$cari%' AND kode_anggota='$kd_anggota'
+						ORDER BY kode_angsur ASC 
+						LIMIT $posisi, $batas");
+	} else {
+		$query=mysqli_query($koneksi, "SELECT * FROM t_angsur 
+						WHERE kode_anggota='$kd_anggota'
+						ORDER BY kode_angsur ASC 
+						LIMIT $posisi, $batas");
+	}
+	$no=$posisi+1;
+
+	while($data=mysqli_fetch_array($query)){
+
+?>
+    <tbody>
+    	<tr>
+			<td><?php echo $no++;?></td>
+            <td align="center"><?php echo $data['tgl_entri'];?></td>
+            <td><?php echo $data['kode_pinjam'];?></td>
+            <td><?php echo $data['besar_angsuran'];?></td>
+            <td align="center">
+	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+			</td>
+        </tr> 
+	</tbody>   
+<?php
+	} //tutup while
+?>
+	<tr class="paging">
+            <td colspan="12">
+         <?php
+            // PAGING
+           if($kategori!=""){
+				$query2 = mysqli_query($koneksi, "SELECT * 
+									FROM t_angsur
+									WHERE $kategori LIKE '%$cari%'
+									ORDER BY kode_angsur ASC");
+			}else{
+				$query2 = mysqli_query($koneksi, "SELECT * FROM t_angsur WHERE kode_anggota='$kd_anggota'");
+			}
+            $jmldata=mysqli_num_rows($query2);
+            $jmlhalaman=ceil($jmldata/$batas);
+			
+                // previous link
+				if($halaman == 1){ 
+					echo '<span class="prn">&lt; Previous</span>&nbsp;';
+                }else{
+					$i = $halaman-1;
+					echo '<a href="?pilih=2.1&aksi=angsur&kode_anggota='.$kd_anggota.'&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
+					echo '<span class="prn">...</span>&nbsp;';
+				}	
+                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
+                    if(($halaman) == $i){ 
+                        echo '<span>'.$i.'</span>&nbsp;'; 
+                    }else{ 
+                        echo '<a href=?pilih=2.1&aksi=angsur&kode_anggota='.$kd_anggota.'&halaman='.$i.'>'.$i.'</a>';
+                    } 
+                } 
+				
+                // next link 
+                if($halaman < $jmlhalaman){ 
+                    $next = ($halaman + 1); 
+					echo '<span class="prn">...</span>&nbsp;';
+                    echo '<a href=?pilih=2.1&aksi=angsur&kode_anggota='.$kd_anggota.'&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
+                }else {
+					echo '<span class="prn">Next &gt;</span>&nbsp;';
+				}
+				
+				 if ($jmldata != 0){
+					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
+				}
+            ?>
+            </td>
+        </tr>
+	</table>
+	<?php } ?>
 </div>
 
 <?php
