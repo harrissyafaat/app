@@ -140,11 +140,8 @@ ddaccordion.init({
 				if ($sel_tgl_hitung >= 30){
 					echo "<a href=\"fungsi/hitung_bunga.php\" style=\" float: right; padding-right: 25px; \">";
 					echo "<img style=\" margin-left: 13px;\" class=\"blink-image\" width=\"45px\" src=\"images/push.png\"><div style=\"font-size: 10px; color: white; margin-top: -5px;\">Hitung bunga</div>";
-<<<<<<< HEAD
 					// echo "string";
-=======
 					echo "</a>";
->>>>>>> 58b9b1da092d53d8151a99001532ced54d11c2c7
 				}
 
 			?>
