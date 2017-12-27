@@ -106,5 +106,33 @@ if($pros=="simpan" || $pros=="pinjam"){
 							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=angsur' style='display:none' name='frame'></iframe>";
 							echo "<script>setTimeout(function(){},1000); frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
 							break;
+		case "hapus" :
+			$kode_simpan = $_GET['kode_simpan'];
+			$kode_pinjam = $_GET['kode_pinjam'];
+			$kode_angsur = $_GET['kode_angsur'];
+			if ($kode_simpan != ""){
+				$qhapus = mysqli_query ($koneksi, "DELETE FROM t_simpan WHERE kode_simpan='$kode_simpan'");
+				if ($qhapus){
+					echo "<script>alert('Data Berhasil Dihapus'); self.history.back();</script>";
+				} else {
+					echo "<script>alert('Data Gagal Dihapus'); self.history.back();</script>";
+				}
+			} else if ($kode_pinjam != "") {
+				$qhapus = mysqli_query ($koneksi, "DELETE FROM t_pinjam WHERE kode_pinjam='$kode_pinjam'");
+				if ($qhapus){
+					echo "<script>alert('Data Berhasil Dihapus'); self.history.back();</script>";
+				} else {
+					echo "<script>alert('Data Gagal Dihapus'); self.history.back();</script>";
+				}
+			} else if ($kode_angsur != "") {
+				$qhapus = mysqli_query ($koneksi, "DELETE FROM t_angsur WHERE kode_angsur='$kode_angsur'");
+				if ($qhapus){
+					echo "<script>alert('Data Berhasil Dihapus'); self.history.back();</script>";
+				} else {
+					echo "<script>alert('Data Gagal Dihapus'); self.history.back();</script>";
+				}
+			}
+
+			break;
 	}
 ?>

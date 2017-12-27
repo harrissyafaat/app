@@ -429,7 +429,7 @@ if ($_GET['aksi'] == "simpan"){
             <td><?php echo $data['kode_jenis_simpan'];?></td>
             <td><?php echo $data['besar_simpanan'];?></td>
             <td align="center">
-	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+	<a href=transaksi/proses_transaksi.php?pros=hapus&kode_simpan=<?php echo $data['kode_simpan'];?>>Hapus</a>
 			</td>
         </tr> 
 	</tbody>   
@@ -620,7 +620,7 @@ if ($_GET['aksi'] == "pinjam"){
             <td><?php echo $data['kode_jenis_pinjam'];?></td>
             <td><?php echo $data['besar_pinjaman'];?></td>
             <td align="center">
-	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+	<a href=transaksi/proses_transaksi.php?pros=hapus&kode_pinjam=<?php echo $data['kode_pinjam'];?>>Hapus</a>
 			</td>
         </tr> 
 	</tbody>   
@@ -815,7 +815,7 @@ if ($_GET['aksi'] == "angsur"){
             <td><?php echo $data['kode_pinjam'];?></td>
             <td><?php echo $data['besar_angsuran'];?></td>
             <td align="center">
-	<a href=index.php?pilih=2.1&aksi=simpan&kode_anggota=<?php echo $data['kode_anggota'];?>>Hapus</a>
+	<a href=transaksi/proses_transaksi.php?pros=hapus&kode_angsur=<?php echo $data['kode_angsur'];?>>Hapus</a>
 			</td>
         </tr> 
 	</tbody>   
