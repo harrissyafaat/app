@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
@@ -10,165 +10,89 @@
 <?php
 	// **STYLE FORM
 ?>
-<script language="javascript" type="text/javascript" src="js/niceforms.js"></script>
-<link rel="stylesheet" type="text/css" href="css/theme1.css" />
 </head>
 
 <?php
 	if(empty($aksi)){
 ?>
-<body>  
-         	            
-<div id="box">
-<h3>Data Setting User</h3>
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
-    <select name="kategori">
-        <option value="" selected="selected" disabled="disabled">Pilihan Kategori</option>
-        <option value="kode_anggota">Kode Anggota</option>
-        <option value="nama_anggota">Nama Anggota</option>
-    </select> 
-    <input type="text" name="input_cari" value="<?php echo $cari;?>"><input type="submit" value="Cari">
-</form>
-<div class="tambah"><a href=?pilih=4.3&aksi=tambah><input type="submit" value="Tambah"></a></div>
-<table width="100%">
+<body>
+
+	<div class="text-right">
+	<a href="?pilih=4.3&aksi=tambah" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah</a>
+	</div>
+	<br>
+	<div class="card mb-3">
+	        <div class="card-header">
+	          <i class="fa fa-table"></i> Data Petugas</div>
+	        <div class="card-body">
+	<div class="table-responsive">
+	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
 		<tr>
-             <th><a href="#">No</a></th>
-             <th><a href="#">Username</a></th>
-             <th><a href="#">Nama Petugas</a></th>
-			 <th><a href="#">Tanggal Entri</a></th>
-             <th><a href="#">Level</a></th>
-             <th colspan="3"><a>Aksi</a></th>
-       	</tr>
-		
-    </thead>
+        <th>No</th>
+        <th>Username</th>
+        <th>Nama Petugas</th>
+				<th>Tanggal Entri</th>
+        <th>Level</th>
+    		<th>Aksi</th>
+    </tr>
+  	</thead>
+		<tbody>
 <?php
-
-		// PAGING
-		$batas=5;
-		$halaman=$_GET['halaman'];
-		if(empty($halaman)){
-			$posisi=0;
-			$halaman=1;
-		}else{
-			$posisi=($halaman-1)*$batas;
-		}
-		if($kategori!=""){
-			$query = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
-								FROM t_user U, t_petugas P, user_rule R 
-								WHERE $kategori LIKE '%$cari%'
-								AND U.kode_petugas = P.kode_petugas
-								AND U.c_rule = R.c_rule 
-								ORDER BY kode_user ASC 
-								LIMIT $posisi, $batas");
-		}else{
-			$query=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
-								FROM t_user U, t_petugas P, user_rule R 
+			$query=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule
+								FROM t_user U, t_petugas P, user_rule R
 								WHERE U.kode_petugas = P.kode_petugas
-								AND U.c_rule = R.c_rule 
-								ORDER BY kode_user ASC 
-								LIMIT $posisi, $batas");
-		}
-		$no=$posisi+1;
-		
+								AND U.c_rule = R.c_rule
+								ORDER BY kode_user ASC");
+		$no=1;
+
 	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
-    <tbody>
     	<tr>
 			<td><?php echo $no++;?></td>
-            <td><?php echo $data['username'];?></td>
+      <td><?php echo $data['username'];?></td>
 			<td><?php echo $data['nama_petugas'];?></td>
 			<td><?php echo Tgl($data['tgl_entri']);?></td>
-            <td><?php echo $data['rule'];?></td>
-            <td align="center">
-<a href=index.php?pilih=4.3&aksi=ubah&kode_user=<?php echo $data['kode_user'];?>><img src="img/user_edit.png" title="Edit user" width="16" height="16" /></a>
-<a href=index.php?pilih=4.3&aksi=hapus&kode_user=<?php echo $data['kode_user'];?>><img src="img/user_delete.png" title="Delete user" width="16" height="16" /></a>
+      <td><?php echo $data['rule'];?></td>
+      <td align="center">
+<a class="btn btn-primary" href=index.php?pilih=4.3&aksi=ubah&kode_user=<?php echo $data['kode_user'];?>><i class="fa fa-edit"></i></a>
+<a class="btn btn-danger" href=index.php?pilih=4.3&aksi=hapus&kode_user=<?php echo $data['kode_user'];?>><i class="fa fa-trash"></i></a>
 			</td>
-        </tr> 
-	</tbody>   
+        </tr>
+	</tbody>
 <?php
 	} //tutup while
 ?>
-	<tr class="paging">
-            <td colspan="12">
-         <?php
-            // PAGING
-			if($kategori!=""){
-				$query2 = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
-									FROM t_user U, t_petugas P, user_rule R 
-									WHERE $kategori LIKE '%$cari%'
-									AND U.kode_petugas = P.kode_petugas
-									AND U.c_rule = R.c_rule 
-									ORDER BY kode_user ASC ");
-			}else{
-				$query2 = mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
-									FROM t_user U, t_petugas P, user_rule R 
-									WHERE U.kode_petugas = P.kode_petugas
-									AND U.c_rule = R.c_rule 
-									ORDER BY kode_user ASC ");
-			}
-            $jmldata=mysqli_num_rows($query2);
-            $jmlhalaman=ceil($jmldata/$batas);
-			
-                // previous link
-				if($halaman == 1){ 
-					echo '<span class="prn">&lt; Previous</span>&nbsp;';
-                }else{
-					$i = $halaman-1;
-					echo '<a href="?pilih=4.3&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
-					echo '<span class="prn">...</span>&nbsp;';
-				}	
-                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
-                    if(($halaman) == $i){ 
-                        echo '<span>'.$i.'</span>&nbsp;'; 
-                    }else{ 
-                        echo '<a href=?pilih=4.3&halaman='.$i.'>'.$i.'</a>';
-                    } 
-                } 
-				
-                // next link 
-                if($halaman < $jmlhalaman){ 
-                    $next = ($halaman + 1); 
-					echo '<span class="prn">...</span>&nbsp;';
-                    echo '<a href=?pilih=4.3&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
-                }else{
-					echo '<span class="prn">Next &gt;</span>&nbsp;';
-				}
-				
-				if ($jmldata != 0){
-					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
-				}
-	
-            ?>
-            </td>
-        </tr>
 	</table>
 	</div>
-    
+	</div>
+	</div>
+
 <?php
 	}elseif($aksi=='tambah'){
 ?>
 
-<div id="box">
-<h3 id="adduser">Tambah Data</h3>
+<div class="card mb-3">
+				<div class="card-header">
+					<i class="fa fa-plus"></i> Tambah Data Petugas</div>
+				<div class="card-body">
 <form action="setting/proses_user.php?pros=tambah" method="post" id="form">
 <fieldset>
-	<dl>
-		<dt><label for="kode">Kode :</label></dt>
-        <dd><input type="text" name="kode_user" size="54" value="<?php echo nomer("U","kode_user","t_user");?>" readonly title="Kode harus diisi"/></dd>
-    </dl>
-	<dl>
-		<dt><label for="username">Username :</label></dt>
-        <dd><input type="text" name="username" size="54" class="required" title="Nama harus diisi"></dd>
-    </dl>
-    <dl>
-        <dt><label for="password">Password :</label></dt>
-        <dd><input type="password" name="password" size="54" class="required" title="Telepon harus diisi"/></dd>
-    </dl>
-	 <dl>
-        <dt><label for="kode_petugas">Nama Petugas :</label></dt>
-        <dd>
-            <select name="kode_petugas" class="required">
+	<div class="form-group">
+		<label for="kode">Kode :</label>
+        <input class="form-control" type="text" name="kode_user" size="54" value="<?php echo nomer("U","kode_user","t_user");?>" readonly title="Kode harus diisi"/>
+    </div>
+	<div class="form-group">
+		<label for="username">Username :</label>
+        <input class="form-control" type="text" name="username" size="54" class="required" title="Nama harus diisi">
+    </div>
+    <div class="form-group">
+        <label for="password">Password :</label>
+        <input class="form-control" type="password" name="password" size="54" class="required" title="Telepon harus diisi"/>
+    </div>
+	 <div class="form-group">
+        <label for="kode_petugas">Nama Petugas :</label>
+            <select class="form-control" name="kode_petugas" class="required">
                 <option value="nama_petugas" selected="selected"> petugas </option>
                 <?php
                 $q=mysqli_query($koneksi, "SELECT * FROM t_petugas");
@@ -179,16 +103,15 @@
                 }
                 ?>
             </select>
-		</dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
-    </dl>
-	<dl>
-        <dt><label for="level">Rule :</label></dt>
-        <dd>
-            <select name="c_rule" class="required">
+
+    </div>
+	<div class="form-group">
+        <label for="tgl_entri">Tanggal Entri :</label>
+        <input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly />
+    </div>
+	<div class="form-group">
+        <label for="level">Rule :</label>
+            <select class="form-control" name="c_rule" class="required">
                 <option value="rule" selected="selected"> rule </option>
                 <?php
                 $q=mysqli_query("SELECT * FROM user_rule");
@@ -199,14 +122,15 @@
                 }
                 ?>
             </select>
-		</dd>
-    </dl>
-    <div align="center">
-    	<input type="submit" name="tambah" id="button1" value="Tambah" />
-		<input type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
+
+    </div>
+    <div class="form-group">
+    	<input class="btn btn-primary" type="submit" name="tambah" id="button1" value="Tambah" />
+		<input class="btn btn-danger" type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
 	</div>
 </fieldset>
 </form>
+</div>
 </div>
 
 <?php
@@ -216,26 +140,28 @@
 		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
-<div id="box">
-<h3 id="adduser">Ubah Data petugas</h3>
+<div class="card mb-3">
+				<div class="card-header">
+					<i class="fa fa-edit"></i> Ubah Data Petugas</div>
+				<div class="card-body">
 <form action="setting/proses_user.php?pros=ubah" method="post" id="form">
 <fieldset>
-		<dl>
-		<dt><label for="kode">Kode :</label></dt>
-        <dd><input type="text" name="kode_user" size="54" value="<?php echo $data2['kode_user'];?>"/></dd>
-    </dl>
-	<dl>
-		<dt><label for="username">Username :</label></dt>
-        <dd><input type="text" name="username" size="54" class="required" value="<?php echo $data2['username'];?>"></dd>
-    </dl>
-    <dl>
-        <dt><label for="password">Password :</label></dt>
-        <dd><input type="text" name="password" size="54" class="required" title="Telepon harus diisi" value="<?php echo $data2['password'];?>"/></dd>
-    </dl>
-	 <dl>
-        <dt><label for="kode_petugas">Kode Petugas :</label></dt>
-        <dd>
-		<select name="kode_petugas">
+		<div class="form-group">
+		<label for="kode">Kode :</label>
+        <input class="form-control" type="text" name="kode_user" size="54" value="<?php echo $data2['kode_user'];?>"/>
+    </div>
+	<div class="form-group">
+		<label for="username">Username :</label>
+        <input class="form-control" type="text" name="username" size="54" class="required" value="<?php echo $data2['username'];?>">
+    </div>
+    <div class="form-group">
+        <label for="password">Password :</label>
+        <input class="form-control" type="text" name="password" size="54" class="required" title="Telepon harus diisi" value="<?php echo $data2['password'];?>"/>
+    </div>
+	 <div class="form-group">
+        <label for="kode_petugas">Kode Petugas :</label>
+
+		<select class="form-control" name="kode_petugas">
 			<?php
 			$q=mysqli_query($koneksi, "SELECT * FROM t_petugas");
 			while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
@@ -246,16 +172,16 @@
             }
 			?>
 		</select>
-		</dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/></dd>
-    </dl>
-	<dl>
-        <dt><label for="level">Rule :</label></dt>
-        <dd>
-		<select name="c_rule">
+
+    </div>
+	<div class="form-group">
+        <label for="tgl_entri">Tanggal Entri :</label>
+        <input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/>
+    </div>
+	<div class="form-group">
+        <label for="level">Rule :</label>
+
+		<select class="form-control" name="c_rule">
 			<?php
 			$q=mysqli_query($koneksi, "SELECT * FROM user_rule");
 			while($a=mysqli_fetch_array($q, MYSQLI_ASSOC)){
@@ -266,58 +192,61 @@
             }
 			?>
 		</select>
-		</dd>
-    </dl><br>
-    <div align="center">
-    	<input type="submit" name="ubah" id="button1" value="Ubah" />
-		<input type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
+
+    </div><br>
+    <div class="form-group">
+    	<input class="btn btn-primary" type="submit" name="ubah" id="button1" value="Ubah" />
+		<input class="btn btn-danger" type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
 	</div>
 </fieldset>
 </form>
+</div>
 </div>
 
 <?php
 	}elseif($aksi=='hapus'){
 		$kode=$_GET['kode_user'];
-		$q=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule 
-						FROM t_user U, t_petugas P, user_rule R 
+		$q=mysqli_query($koneksi, "SELECT U.*, P.nama_petugas, R.rule
+						FROM t_user U, t_petugas P, user_rule R
 						WHERE U.kode_petugas = P.kode_petugas
-						AND U.c_rule = R.c_rule 
+						AND U.c_rule = R.c_rule
 						AND kode_user='$kode'");
 		$data2=mysqli_fetch_array($q, MYSQLI_ASSOC);
 ?>
 
-<div id="box">
-<h3 id="adduser">Data petugas yang akan dihapus</h3>
+<div class="card mb-3">
+				<div class="card-header">
+					<i class="fa fa-trash"></i> Hapus Data Petugas</div>
+				<div class="card-body">
 <form action="setting/proses_user.php?pros=hapus" method="post" id="form">
 <fieldset>
-		<dl>
-		<dt><label for="kode">Kode :</label></dt>
-        <dd><input type="text" name="kode_user" size="54" value="<?php echo $data2['kode_user'];?>" readonly/></dd>
-    </dl>
-	<dl>
-		<dt><label for="username">Username :</label></dt>
-        <dd><input type="text" name="username" size="54" class="required" value="<?php echo $data2['username'];?>" readonly></dd>
-    </dl>
-    <dl>
-        <dt><label for="password">Password :</label></dt>
-        <dd><input type="text" name="password" size="54" class="required" value="<?php echo $data2['password'];?>" readonly/></dd>
-    </dl>
-	 <dl>
-        <dt><label for="kode_petugas">Nama Petugas :</label></dt>
-        <dd><input type="text" name="nama_petugas" size="54" class="required" value="<?php echo $data2['nama_petugas'];?>" readonly/></dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly style="background-color:#CCCCCC"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="level">Rule :</label></dt>
-       	<dd><input type="text" name="rule" size="54" class="required" value="<?php echo $data2['rule'];?>" readonly/></dd>
-    </dl><br>
-    <div align="center">
-    	<input type="submit" name="hapus" id="button1" value="Hapus" />
-		<input type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
+		<div class="form-group">
+		<label for="kode">Kode :</label>
+        <input class="form-control" type="text" name="kode_user" size="54" value="<?php echo $data2['kode_user'];?>" readonly/>
+    </div>
+	<div class="form-group">
+		<label for="username">Username :</label>
+        <input class="form-control" type="text" name="username" size="54" class="required" value="<?php echo $data2['username'];?>" readonly>
+    </div>
+    <div class="form-group">
+        <label for="password">Password :</label>
+        <input class="form-control" type="text" name="password" size="54" class="required" value="<?php echo $data2['password'];?>" readonly/>
+    </div>
+	 <div class="form-group">
+        <label for="kode_petugas">Nama Petugas :</label>
+        <input class="form-control" type="text" name="nama_petugas" size="54" class="required" value="<?php echo $data2['nama_petugas'];?>" readonly/>
+    </div>
+	<div class="form-group">
+        <label for="tgl_entri">Tanggal Entri :</label>
+        <input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly style="background-color:#CCCCCC"/>
+    </div>
+	<div class="form-group">
+        <label for="level">Rule :</label>
+       	<input class="form-control" type="text" name="rule" size="54" class="required" value="<?php echo $data2['rule'];?>" readonly/>
+    </div><br>
+    <div class="form-group">
+    	<input class="btn btn-primary" type="submit" name="hapus" id="button1" value="Hapus" />
+		<input class="btn btn-danger" type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
 	</div>
 </fieldset>
 </form>
@@ -326,4 +255,3 @@
 <?php
 	}
 ?>
-

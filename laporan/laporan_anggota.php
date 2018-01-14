@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
@@ -15,57 +15,45 @@
 </head>
 
 <body>
-<div id="box">
-<h3>Laporan Anggota</h3>
-<!--<form action="<?php// $_SERVER['PHP_SELF']?>" method="post">
-    <select name="kategori">
-        <option value="" selected="selected" disabled="disabled"></option>
-        <option value="kode_anggota">Per Halaman</option>
-        <option value="nama_anggota">Semua Anggota</option>
-    </select>
-	<input type="button" id="button1" value="Preview">
-</form>-->
 
 <?php
 	if(empty($aksi)){
 ?>
-<table width="100%">
+<div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Laporan Anggota</div>
+        <div class="card-body">
+<div class="table-responsive">
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
 		<tr>
-             <th rowspan="2"><a href="#">No</a></th>
-             <th><a href="#">Kode Anggota</a></th>
-             <th><a href="#">Nama Anggota</a></th>
-             <th><a href="#">Pekerjaan</a></th>
-             <th><a href="#">Tanggal Masuk</a></th>
-             <th><a href="#">Tanggal Keluar</a></th>
-			 <th rowspan="2"><a href="#">Aksi</a></th>
-       	</tr>		
+       <th>No</th>
+       <th>Kode Anggota</th>
+       <th>Nama Anggota</th>
+       <th>Pekerjaan</th>
+       <th>Tanggal Masuk</th>
+       <th>Tanggal Keluar</th>
+			 <th>Aksi</th>
+    </tr>
     </thead>
+		<tfoot>
+		<tr>
+       <th>No</th>
+       <th>Kode Anggota</th>
+       <th>Nama Anggota</th>
+       <th>Pekerjaan</th>
+       <th>Tanggal Masuk</th>
+       <th>Tanggal Keluar</th>
+			 <th>Aksi</th>
+    </tr>
+	</tfoot>
+	<tbody>
 <?php
-	// PAGING
-		$batas=25;
-		$halaman=$_GET['halaman'];
-		if(empty($halaman)){
-			$posisi=0;
-			$halaman=1;
-		}else{
-			$posisi=($halaman-1)*$batas;
-		}
-		if($kategori!=""){
-			$query = mysqli_query($koneksi, "SELECT * 
-								FROM t_anggota
-								WHERE $kategori LIKE '%$cari%'
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}else{
-			$query = mysqli_query($koneksi, "SELECT * FROM t_anggota 
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}
-	$no=$posisi+1;
+			$query = mysqli_query($koneksi, "SELECT * FROM t_anggota
+								ORDER BY kode_anggota ASC");
+	$no=1;
 	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
-    <tbody>
     	<tr>
 			<td><?php echo $no++;?></td>
             <td><?php echo $data['kode_anggota'];?></td>
@@ -73,68 +61,29 @@
             <td><?php echo $data['pekerjaan'];?></td>
             <td><?php echo $data['tgl_masuk'];?></td>
             <td><?php echo $data['tgl_keluar'];?></td>
-            <td align="center"><img src="img/user.png" title="Detail" width="16" height="16" /></td>
-        </tr> 
-	</tbody>   
+            <td align="center"><a class="btn btn-default"><i class="fa fa-user"></i></a></td>
+        </tr>
 <?php
 		}
 ?>
-		<tr class="paging">
-            <td colspan="12">
-         <?php
-            // PAGING
-			if($kategori!=""){
-				$query2 = mysqli_query($koneksi, "SELECT * 
-									FROM t_anggota
-									WHERE $kategori LIKE '%$cari%'
-									ORDER BY kode_anggota ASC");
-			}else{
-				$query2 = mysqli_query($koneksi, "SELECT * FROM t_anggota");
-			}
-            $jmldata=mysqli_num_rows($query2);
-            $jmlhalaman=ceil($jmldata/$batas);
-			
-                // previous link
-				if($halaman == 1){ 
-					echo '<span class="prn">&lt; Previous</span>&nbsp;';
-                }else{
-					$i = $halaman-1;
-					echo '<a href="?pilih=3.1&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
-					echo '<span class="prn">...</span>&nbsp;';
-				}	
-                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
-                    if(($halaman) == $i){ 
-                        echo '<span>'.$i.'</span>&nbsp;'; 
-                    }else{ 
-                        echo '<a href=?pilih=3.1&halaman='.$i.'>'.$i.'</a>';
-                    } 
-                } 
-				
-                // next link 
-                if($halaman < $jmlhalaman){ 
-                    $next = ($halaman + 1); 
-					echo '<span class="prn">...</span>&nbsp;';
-                    echo '<a href=?pilih=3.1&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
-                }else {
-					echo '<span class="prn">Next &gt;</span>&nbsp;';
-				}
-				
-				 if ($jmldata != 0){
-					echo '<p id="total_count">(total '.$jmldata.' records)</p></div>';
-				}
-	
-            ?>
-            </td>
-        </tr>
-	</table><br>
-	<div align="center">
-		<a href="laporan/cetak_laporan_anggota.php"><img src="images/cetak_word.png" width="32" height="32" title="cetak kartu anggota"></a>
-		<a href="#"><img src="images/cetak_excel.png" width="32" height="32" title="cetak kartu anggota"></a>
-		<a href="cetak.php"><img src="images/cetak_pdf.png" width="32" height="32" title="cetak kartu anggota"></a>
-		<br>
-		<input type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+<div class="row">
+	<div class="col-6">
+		<a class="btn btn-primary" href="laporan/cetak_laporan_anggota.php">Export Word</a>
+		<a class="btn btn-success" href="#">Export Excel</a>
+		<a class="btn btn-danger" href="#">Print</a>
+	</div>
+	<div class="col-6 text-right">
+		<input class="btn btn-warning" type="button" name="back" id="button1" value="Kembali" onClick="self.history.back()"/>
 	</div>
 </div>
+<br>
 
 <?php
 }

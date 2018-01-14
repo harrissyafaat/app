@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include "config/conn.php";
 	include "fungsi/fungsi.php";
 
@@ -8,7 +8,6 @@
 ?>
 
 <head>
-<script language="javascript" type="text/javascript" src="js/niceforms.js"></script>
 <script language="JavaScript">
 	$(document).ready(function(){
 		$(function() {
@@ -25,206 +24,150 @@
 		});
 	});
 </script>
-<link rel="stylesheet" type="text/css" href="css/theme1.css" />
 </head>
 
 <?php
 	if(empty($aksi)){
 ?>
-<body>  
-         	            
-<div id="box">
-<h3>Data Anggota</h3>
+<body>
 
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
-    <select name="kategori">
-        <option value="" selected="selected" disabled="disabled">Pilihan Kategori</option>
-        <option value="kode_anggota">Kode Anggota</option>
-        <option value="nama_anggota">Nama Anggota</option>
-    </select> 
-    <input type="text" name="input_cari" value="<?php echo $cari;?>"><input type="submit" value="Cari">
-</form>             
-<div class="tambah"><a href=?pilih=1.2&aksi=tambah><input type="submit" value="Tambah"></a></div>
-<table width="100%">
+	<div class="text-right">
+	<a href="?pilih=1.2&aksi=tambah" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah</a>
+	</div>
+	<br>
+	<div class="card mb-3">
+	        <div class="card-header">
+	          <i class="fa fa-table"></i> Data Petugas</div>
+	        <div class="card-body">
+	<div class="table-responsive">
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
-		<tr>
-             <th><a href="#">No</a></th>
-             <th><a href="#">Kode Anggota</a></th>
-             <th><a href="#">Nama Anggota</a></th>
-             <th><a href="#">Pekerjaan</a></th>
-             <th><a href="#">Tanggal Masuk</a></th>
-             <th colspan="3"><a>Aksi</a></th>
-       	</tr>	
+			<tr>
+       <th>No</th>
+       <th>Kode Anggota</th>
+       <th>Nama Anggota</th>
+       <th>Pekerjaan</th>
+       <th>Tanggal Masuk</th>
+       <th>Aksi</th>
+       </tr>
     </thead>
+		<tfoot>
+			<tr>
+       <th>No</th>
+       <th>Kode Anggota</th>
+       <th>Nama Anggota</th>
+       <th>Pekerjaan</th>
+       <th>Tanggal Masuk</th>
+       <th>Aksi</th>
+       </tr>
+    </tfoot>
+		<tbody>
 <?php
 
-		// PAGING
-		$batas=25;
-		$halaman=$_GET['halaman'];
-		if(empty($halaman)){
-			$posisi=0;
-			$halaman=1;
-		}else{
-			$posisi=($halaman-1)*$batas;
-		}
-		if($kategori!=""){
-			$query = mysqli_query($koneksi, "SELECT * 
-								FROM t_anggota
-								WHERE $kategori LIKE '%$cari%'
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}else{
-			$query=mysqli_query($koneksi, "SELECT * FROM t_anggota 
-								ORDER BY kode_anggota ASC 
-								LIMIT $posisi, $batas");
-		}
-		$no=$posisi+1;
-		
+			$query=mysqli_query($koneksi, "SELECT * FROM t_anggota
+								ORDER BY kode_anggota ASC");
+		$no=1;
+
 	while($data=mysqli_fetch_array($query, MYSQLI_ASSOC)){
 ?>
-    <tbody>
+
     	<tr>
 			<td><?php echo $no++;?></td>
             <td><?php echo $data['kode_anggota'];?></td>
             <td><?php echo $data['nama_anggota'];?></td>
             <td><?php echo $data['pekerjaan'];?></td>
             <td><?php echo Tgl($data['tgl_masuk']);?></td>
-            <td align="center">
-	<a href=index.php?pilih=1.2&aksi=ubah&kode_anggota=<?php echo $data['kode_anggota'];?>><img src="img/user_edit.png" title="Edit user" width="16" height="16" /></a>
-    <a href=index.php?pilih=1.2&aksi=hapus&kode_anggota=<?php echo $data['kode_anggota'];?>><img src="img/user_delete.png" title="Delete user" width="16" height="16" /></a>
-	<a href=index.php?pilih=1.2&aksi=cetak&kode_anggota=<?php echo $data['kode_anggota'];?>><img src="img/cetak.gif" title="Cetak Kartu Anggota" width="16" height="16" /></a>
+            <td>
+	<a class="btn btn-primary" href=index.php?pilih=1.2&aksi=ubah&kode_anggota=<?php echo $data['kode_anggota'];?>><i class="fa fa-edit"></i></a>
+  <a class="btn btn-danger" href=index.php?pilih=1.2&aksi=hapus&kode_anggota=<?php echo $data['kode_anggota'];?>><i class="fa fa-trash"></i></a>
+	<a class="btn btn-success" href=index.php?pilih=1.2&aksi=cetak&kode_anggota=<?php echo $data['kode_anggota'];?>><i class="fa fa-print"></i></a>
 			</td>
-        </tr> 
-	</tbody>   
+        </tr>
+
 <?php
 	} //tutup while
 ?>
-	<tr class="paging">
-            <td colspan="12">
-         <?php
-            // PAGING
-           if($kategori!=""){
-				$query2 = mysqli_query($koneksi, "SELECT * 
-									FROM t_anggota
-									WHERE $kategori LIKE '%$cari%'
-									ORDER BY kode_anggota ASC");
-			}else{
-				$query2 = mysqli_query($koneksi, "SELECT * FROM t_anggota");
-			}
-            $jmldata=mysqli_num_rows($query2);
-            $jmlhalaman=ceil($jmldata/$batas);
-			
-                // previous link
-				if($halaman == 1){ 
-					echo '<span class="prn">&lt; Previous</span>&nbsp;';
-                }else{
-					$i = $halaman-1;
-					echo '<a href="?pilih=1.2&halaman='.$i.'" class="prn" rel="nofollow" title="go to page '.$i.'">&lt; Previous</a>&nbsp;';
-					echo '<span class="prn">...</span>&nbsp;';
-				}	
-                for($i = 1; $i <= $jmlhalaman && $i <= $jmlhalaman; $i++){ 
-                    if(($halaman) == $i){ 
-                        echo '<span>'.$i.'</span>&nbsp;'; 
-                    }else{ 
-                        echo '<a href=?pilih=1.2&halaman='.$i.'>'.$i.'</a>';
-                    } 
-                } 
-				
-                // next link 
-                if($halaman < $jmlhalaman){ 
-                    $next = ($halaman + 1); 
-					echo '<span class="prn">...</span>&nbsp;';
-                    echo '<a href=?pilih=1.2&halaman='.$next.' class="prn" rel="nofollow" title="go to page '.$next.'">Next &gt;</a>&nbsp;'; 
-                }else {
-					echo '<span class="prn">Next &gt;</span>&nbsp;';
-				}
-				
-				 if ($jmldata != 0){
-					echo '<p id="total_count">(total '.$jmldata.' data)</p></div>';
-				}
-	
-            ?>
-            </td>
-        </tr>
-	</table>
-	</div>
-    
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
 <?php
 	}elseif($aksi=='tambah'){
 		$query=mysqli_query($koneksi, "SELECT * FROM t_jenis_simpan WHERE kode_jenis_simpan='S0001'");
 		$data=mysqli_fetch_array($query, MYSQLI_ASSOC);
 ?>
 
-<div id="box">
-<h3 id="adduser">Tambah Data Anggota</h3>
+<div class="row">
+  <div class="col-12">
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-plus"></i> Tambah Data Anggota</div>
+  <div class="card-body">
 <form action="anggota/proses_anggota.php?pros=tambah" method="post" id="form" enctype="multipart/form-data">
-<h4 id="adduser">Data Pribadi</h4>
 <fieldset>
-	<dl>
-		<dt><label for="kode_anggota">Kode Anggota :</label></dt>
-         <dd><input type="text" name="kode_anggota" size="54" value="<?php echo nomer("A","kode_anggota","t_anggota	");?>" readonly title="Kode harus diisi"/></dd>
-    </dl>
+	<div class="form-group">
+		<label for="kode_anggota">Kode Anggota :</label>
+		<input class="form-control" type="text" name="kode_anggota" size="54" value="<?php echo nomer("A","kode_anggota","t_anggota	");?>" readonly title="Kode harus diisi"/>
+	</div>
     <?php
     	$kode = nomer("A","kode_anggota","t_anggota	");
     ?>
-	<dl>
-		<dt><label for="tgl_masuk">Tanggal Masuk :</label></dt>
-        <dd><input type="text" name="tgl_masuk" size="54" id="tgl_masuk" class="required" title="Tanggal Masuk harus diisi"></dd>
-    </dl>
-	<dl>
-		<dt><label for="simpanan_pokok">Simpanan Pokok :</label></dt>
-        <dd><input type="text" name="simpanan_pokok" size="54" id="simpanan_pokok" class="required" readonly="" value="<?php echo $data['besar_simpanan'];?>"></dd>
-    </dl>
-    <dl>
-        <dt><label for="nama_anggota">Nama Lengkap :</label></dt>
-        <dd><input type="text" name="nama_anggota" size="54" class="required" title="Nama harus diisi"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="jenis_kelamin">Jenis Kelamin :</label></dt>
-        <dd>
+		<div class="form-group">
+			<label for="tgl_masuk">Tanggal Masuk :</label>
+			<input class="form-control" type="text" name="tgl_masuk" size="54" id="tgl_masuk" class="required" title="Tanggal Masuk harus diisi">
+		</div>
+		<div class="form-group">
+			<label for="simpanan_pokok">Simpanan Pokok :</label>
+			<input class="form-control" type="text" name="simpanan_pokok" size="54" id="simpanan_pokok" class="required" readonly="" value="<?php echo $data['besar_simpanan'];?>">
+		</div>
+		<div class="form-group">
+			<label for="nama_anggota">Nama Lengkap :</label>
+			<input class="form-control" type="text" name="nama_anggota" size="54" class="required" title="Nama harus diisi"/>
+		</div>
+		<div class="form-group">
+			<label for="jenis_kelamin">Jenis Kelamin :</label>
 			<input type="radio" name="jenis_kelamin" value="Laki-laki" class="required" title="Jenis Kelamin harus diisi"/> Laki-laki
-			<input type="radio" name="jenis_kelamin" value="Perempuan" class="required" title="Jenis Kelamin harus diisi"/> Perempuan		
-		</dd>
-    </dl>
-	<dl>
-        <dt><label for="tempat_lahir">Tempat / Tanggal Lahir :</label></dt>
-        <dd><input type="text" name="tempat_lahir" size="26" class="required" title="Tempat Lahir harus diisi" /> / <input type="text" name="tgl_lahir" size="21" id="tanggal" class="required" title="Tanggal Lahir harus diisi"></dd>
-    </dl>
-	<dl>
-        <dt><label for="alamat_anggota">Alamat Anggota :</label></dt>
-        <dd><textarea name="alamat_anggota" id="alamat_anggota" rows="5" cols="41" class="required" title="Alamat harus diisi"></textarea></dd>
-    </dl>
-	<dl>
-        <dt><label for="no_identitas">No KTP/SIM :</label></dt>
-        <dd><input type="text" name="no_identitas" size="54" class="required" title="No Identitas harus diisi"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="telp">Telepon :</label></dt>
-        <dd><input type="text" name="telp" size="54" class="required" title="Telepon harus diisi"/></dd>
-    </dl>   
-	<dl>
-        <dt><label for="pekerjaan">Pekerjaan :</label></dt>
-        <dd><input type="text" name="pekerjaan" size="54" class="required" title="Pekerjaan harus diisi" /></dd>
-    </dl>	
-<!-- 	<dl>
-        <dt><label for="photo">Foto :</label></dt>
-        <dd><input type="file" name="photo" class="required" title="Foto harus diisi" /></dd>
-    </dl> -->
-    
-	<dl>
-		<dt><label for="user_entri">User Entri :</label></dt>
-        <dd><input type="text" name="u_entry" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly ></dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/></dd>
-    </dl>
+			<input type="radio" name="jenis_kelamin" value="Perempuan" class="required" title="Jenis Kelamin harus diisi"/> Perempuan
+		</div>
+		<div class="form-group">
+			<label for="tempat_lahir">Tempat / Tanggal Lahir :</label>
+			<input class="form-control" type="text" name="tempat_lahir" size="26" class="required" title="Tempat Lahir harus diisi" /> / <input class="form-control" type="text" name="tgl_lahir" size="21" id="tanggal" class="required" title="Tanggal Lahir harus diisi">
+		</div>
+		<div class="form-group">
+			<label for="alamat_anggota">Alamat Anggota :</label>
+			<textarea class="form-control" name="alamat_anggota" id="alamat_anggota" rows="5" cols="41" class="required" title="Alamat harus diisi"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="no_identitas">No KTP/SIM :</label>
+			<input class="form-control" type="text" name="no_identitas" size="54" class="required" title="No Identitas harus diisi"/>
+		</div>
+		<div class="form-group">
+			<label for="telp">Telepon :</label>
+			<input class="form-control" type="text" name="telp" size="54" class="required" title="Telepon harus diisi"/>
+		</div>
+		<div class="form-group">
+			<label for="pekerjaan">Pekerjaan :</label>
+			<input class="form-control" type="text" name="pekerjaan" size="54" class="required" title="Pekerjaan harus diisi" />
+		</div>
+		<div class="form-group">
+			<label for="user_entri">User Entri :</label>
+			<input class="form-control" type="text" name="u_entry" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly >
+		</div>
+		<div class="form-group">
+			<label for="tgl_entri">Tanggal Entri :</label>
+			<input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/>
+		</div>
+		<div class="form-group text-center">
+			<input class="btn btn-primary" type="submit" name="daftar" id="button1" value="Daftar" onClick="cetak_baru();" />
+			<input class="btn btn-danger" type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
+		</div>
 </fieldset>
-   <div align="center">
-    	<input type="submit" name="daftar" id="button1" value="Daftar" onClick="cetak_baru();" />
-		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
-	</div>
 </form>
+</div>
+</div>
 </div>
 
 <?php
@@ -234,76 +177,77 @@
 		$data2=mysqli_fetch_array($qubah, MYSQLI_ASSOC);
 ?>
 
-<div id="box">
-<h3 id="adduser">Ubah Data Anggota</h3>
+<div class="row">
+  <div class="col-12">
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-plus"></i> Ubah Data Anggota</div>
+  <div class="card-body">
 <form action="anggota/proses_anggota.php?pros=ubah" method="post" id="form" enctype="multipart/form-data">
-<h4 id="adduser">Data Pribadi</h4>
 <fieldset>
 	<!-- <?php if($data2['photo']){?><img src="<?php echo $data2['photo'];?>" /><?php }else{?> <img src="img/who.gif" /> <?php }?> -->
-	<dl>
-		<dt>
+	<div class="form-group">
 		<label for="kode_anggota">Kode Anggota :</label>
-		</dt>
-        <dd><input type="text" name="kode_anggota" size="54" value="<?php echo $data2['kode_anggota'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-		<dt><label for="tgl_masuk">Tanggal Masuk :</label></dt>
-        <dd><input type="text" name="tgl_masuk" size="54" id="tgl_masuk" value="<?php echo $data2['tgl_masuk'];?>"></dd>
-    </dl>
-    <dl>
-        <dt><label for="nama_anggota">Nama Lengkap :</label></dt>
-        <dd><input type="text" name="nama_anggota" size="54" value="<?php echo $data2['nama_anggota'];?>"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="jenis_kelamin">Jenis Kelamin :</label></dt>
-        <dd>
-<?php	
-	if ($data2['jenis_kelamin'] == "Laki-laki"){
-		echo "<input type='radio' name='jenis_kelamin' value='Laki-laki' checked>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan'>Perempuan";
-	}else if ($data2['jenis_kelamin'] == "Perempuan"){
-		echo "<input type='radio' name='jenis_kelamin' value='Laki-laki'>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan' checked>Perempuan";
-	}
-?>		
-		</dd>
-    </dl>
-	<dl>
-        <dt><label for="tempat_lahir">Tempat / Tanggal Lahir :</label></dt>
-        <dd><input type="text" name="tempat_lahir" size="26" value="<?php echo $data2['tempat_lahir'];?>"/> / <input type="text" name="tgl_lahir" size="21" value="<?php echo $data2['tgl_lahir'];?>"></dd>
-    </dl>
-	<dl>
-        <dt><label for="alamat_anggota">Alamat Anggota :</label></dt>
-        <dd><textarea name="alamat_anggota" id="alamat_anggota" rows="5" cols="41"><?php echo $data2['alamat_anggota'];?></textarea></dd>
-    </dl>
-	<dl>
-        <dt><label for="no_identitas">No KTP/SIM :</label></dt>
-        <dd><input type="text" name="no_identitas" size="54" value="<?php echo $data2['no_identitas'];?>"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="telp">Telepon :</label></dt>
-        <dd><input type="text" name="telp" size="54" value="<?php echo $data2['telp'];?>"/></dd>
-    </dl>   	
-	<dl>
-        <dt><label for="pekerjaan">Pekerjaan :</label></dt>
-        <dd><input type="text" name="pekerjaan" size="54" value="<?php echo $data2['pekerjaan'];?>"/></dd>
-    </dl>
-	<dl>
-        <dt><label for="photo">Foto :</label></dt>
-        <dd><input type="file" name="photo" value="<?php echo $data2['photo'];?>"/></dd>
-    </dl>
-	<dl>
-		<dt><label for="user_entri">User Entri :</label></dt>
-        <dd><input type="text" name="user_entri" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly ></dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly /></dd>
-    </dl>
-</fieldset>
-   <div align="center">
-    	<input type="submit" name="ubah" id="button1" value="Ubah" />
-		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
+		<input class="form-control" type="text" name="kode_anggota" size="54" value="<?php echo $data2['kode_anggota'];?>" readonly=""/>
 	</div>
+	<div class="form-group">
+		<label for="tgl_masuk">Tanggal Masuk :</label>
+		<input class="form-control" type="text" name="tgl_masuk" size="54" id="tgl_masuk" value="<?php echo $data2['tgl_masuk'];?>">
+	</div>
+	<div class="form-group">
+		<label for="nama_anggota">Nama Lengkap :</label>
+		<input class="form-control" type="text" name="nama_anggota" size="54" value="<?php echo $data2['nama_anggota'];?>"/>
+	</div>
+	<div class="form-group">
+		<label for="jenis_kelamin">Jenis Kelamin :</label>
+		<?php
+			if ($data2['jenis_kelamin'] == "Laki-laki"){
+				echo "<input type='radio' name='jenis_kelamin' value='Laki-laki' checked>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan'>Perempuan";
+			}else if ($data2['jenis_kelamin'] == "Perempuan"){
+				echo "<input type='radio' name='jenis_kelamin' value='Laki-laki'>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan' checked>Perempuan";
+			}
+		?>
+	</div>
+	<div class="form-group">
+		<label for="tempat_lahir">Tempat / Tanggal Lahir :</label>
+		<input class="form-control" type="text" name="tempat_lahir" size="26" value="<?php echo $data2['tempat_lahir'];?>"/> / <input class="form-control" type="text" name="tgl_lahir" size="21" value="<?php echo $data2['tgl_lahir'];?>">
+	</div>
+	<div class="form-group">
+		<label for="alamat_anggota">Alamat Anggota :</label>
+		<textarea class="form-control" name="alamat_anggota" id="alamat_anggota" rows="5" cols="41"><?php echo $data2['alamat_anggota'];?></textarea>
+	</div>
+	<div class="form-group">
+		<label for="no_identitas">No KTP/SIM :</label>
+		<input class="form-control" type="text" name="no_identitas" size="54" value="<?php echo $data2['no_identitas'];?>"/>
+	</div>
+	<div class="form-group">
+		<label for="telp">Telepon :</label>
+		<input class="form-control" type="text" name="telp" size="54" value="<?php echo $data2['telp'];?>"/>
+	</div>
+	<div class="form-group">
+		<label for="pekerjaan">Pekerjaan :</label>
+		<input class="form-control" type="text" name="pekerjaan" size="54" value="<?php echo $data2['pekerjaan'];?>"/>
+	</div>
+	<div class="form-group">
+		<label for="photo">Foto :</label>
+		<input class="form-control" type="file" name="photo" value="<?php echo $data2['photo'];?>"/>
+	</div>
+	<div class="form-group">
+		<label for="user_entri">User Entri :</label>
+		<input class="form-control" type="text" name="user_entri" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly >
+	</div>
+	<div class="form-group">
+		<label for="tgl_entri">Tanggal Entri :</label>
+		<input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly />
+	</div>
+	<div class="form-group text-center">
+		<input class="btn btn-primary" type="submit" name="ubah" id="button1" value="Ubah" />
+		<input class="btn btn-danger" type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
+	</div>
+</fieldset>
 </form>
+</div>
+</div>
 </div>
 
 <?php
@@ -313,71 +257,80 @@
 		$data3=mysqli_fetch_array($qhapus, MYSQLI_ASSOC);
 ?>
 
-<div id="box">
-<h3 id="adduser">Hapus Data Anggota</h3>
+<div class="row">
+  <div class="col-12">
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-plus"></i> Hapus Data Anggota</div>
+  <div class="card-body">
 <form action="anggota/proses_anggota.php?pros=hapus" method="post" id="form">
 <h4 id="adduser">Data Pribadi</h4>
 <fieldset>
-	<dl>
-		<dt><label for="kode_anggota">Kode Anggota :</label></dt>
-        <dd><input type="text" name="kode_anggota" size="54" value="<?php echo $data3['kode_anggota'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-		<dt><label for="tgl_masuk">Tanggal Masuk :</label></dt>
-        <dd><input type="text" name="tgl_masuk" size="54" id="tgl_masuk" value="<?php echo $data3['tgl_masuk'];?>" readonly=""></dd>
-    </dl>
-    <dl>
-        <dt><label for="nama_anggota">Nama Lengkap :</label></dt>
-        <dd><input type="text" name="nama_anggota" size="54" value="<?php echo $data3['nama_anggota'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-        <dt><label for="jenis_kelamin">Jenis Kelamin :</label></dt>
-        <dd><input type="text" name="jenis_kelamin" size="54" value="<?php echo $data3['jenis_kelamin'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-        <dt><label for="tempat_lahir">Tempat / Tanggal Lahir :</label></dt>
-        <dd><input type="text" name="tempat_lahir" size="26" value="<?php echo $data3['tempat_lahir'];?>" readonly=""/> / <input type="text" name="tgl_lahir" size="21" value="<?php echo $data3['tgl_lahir'];?>" readonly=""></dd>
-    </dl>
-	<dl>
-        <dt><label for="alamat_anggota">Alamat Anggota :</label></dt>
-        <dd><textarea name="alamat_anggota" id="alamat_anggota" rows="5" cols="41" readonly=""><?php echo $data3['alamat_anggota'];?></textarea></dd>
-    </dl>
-	<dl>
-        <dt><label for="no_identitas">No KTP/SIM :</label></dt>
-        <dd><input type="text" name="no_identitas" size="54" value="<?php echo $data3['no_identitas'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-        <dt><label for="telp">Telepon :</label></dt>
-        <dd><input type="text" name="telp" size="54" value="<?php echo $data3['telp'];?>" readonly=""/></dd>
-    </dl>   
-	<dl>
-        <dt><label for="pekerjaan">Pekerjaan :</label></dt>
-        <dd><input type="text" name="pekerjaan" size="54" value="<?php echo $data3['pekerjaan'];?>" readonly=""/></dd>
-    </dl>	
-	<dl>
-        <dt><label for="photo">Foto :</label></dt>
-        <dd><input type="file" name="photo" value="<?php echo $data3['photo'];?>" readonly=""/></dd>
-    </dl>
-	<dl>
-		<dt><label for="user_entri">User Entri :</label></dt>
-        <dd><input type="text" name="user_entri" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly></dd>
-    </dl>
-	<dl>
-        <dt><label for="tgl_entri">Tanggal Entri :</label></dt>
-        <dd><input type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly/></dd>
-    </dl>
-</fieldset>
-   <div align="center">
-    	<input type="submit" name="hapus" id="button1" value="Hapus" />
-		<input type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
+	<!-- <?php if($data2['photo']){?><img src="<?php echo $data2['photo'];?>" /><?php }else{?> <img src="img/who.gif" /> <?php }?> -->
+	<div class="form-group">
+		<label for="kode_anggota">Kode Anggota :</label>
+		<input class="form-control" type="text" name="kode_anggota" size="54" value="<?php echo $data2['kode_anggota'];?>" readonly=""/>
 	</div>
+	<div class="form-group">
+		<label for="tgl_masuk">Tanggal Masuk :</label>
+		<input class="form-control" type="text" name="tgl_masuk" size="54" id="tgl_masuk" value="<?php echo $data2['tgl_masuk'];?>" readonly>
+	</div>
+	<div class="form-group">
+		<label for="nama_anggota">Nama Lengkap :</label>
+		<input class="form-control" type="text" name="nama_anggota" size="54" value="<?php echo $data2['nama_anggota'];?>" readonly/>
+	</div>
+	<div class="form-group">
+		<label for="jenis_kelamin">Jenis Kelamin :</label>
+		<?php
+			if ($data2['jenis_kelamin'] == "Laki-laki"){
+				echo "<input type='radio' name='jenis_kelamin' value='Laki-laki' checked>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan' readonly>Perempuan";
+			}else if ($data2['jenis_kelamin'] == "Perempuan"){
+				echo "<input type='radio' name='jenis_kelamin' value='Laki-laki'>Laki-laki <input type='radio' name='jenis_kelamin' value='Perempuan' checked readonly>Perempuan";
+			}
+		?>
+	</div>
+	<div class="form-group">
+		<label for="tempat_lahir">Tempat / Tanggal Lahir :</label>
+		<input class="form-control" type="text" name="tempat_lahir" size="26" value="<?php echo $data2['tempat_lahir'];?>" readonly/> / <input class="form-control" type="text" name="tgl_lahir" size="21" value="<?php echo $data2['tgl_lahir'];?>" readonly>
+	</div>
+	<div class="form-group">
+		<label for="alamat_anggota">Alamat Anggota :</label>
+		<textarea class="form-control" name="alamat_anggota" id="alamat_anggota" rows="5" cols="41" readonly><?php echo $data2['alamat_anggota'];?></textarea>
+	</div>
+	<div class="form-group">
+		<label for="no_identitas">No KTP/SIM :</label>
+		<input class="form-control" type="text" name="no_identitas" size="54" value="<?php echo $data2['no_identitas'];?>" readonly/>
+	</div>
+	<div class="form-group">
+		<label for="telp">Telepon :</label>
+		<input class="form-control" type="text" name="telp" size="54" value="<?php echo $data2['telp'];?>" readonly/>
+	</div>
+	<div class="form-group">
+		<label for="pekerjaan">Pekerjaan :</label>
+		<input class="form-control" type="text" name="pekerjaan" size="54" value="<?php echo $data2['pekerjaan'];?>" readonly/>
+	</div>
+	<div class="form-group">
+		<label for="user_entri">User Entri :</label>
+		<input class="form-control" type="text" name="user_entri" size="54" value="<?php session_start(); echo $_SESSION['kopname'];?>" readonly >
+	</div>
+	<div class="form-group">
+		<label for="tgl_entri">Tanggal Entri :</label>
+		<input class="form-control" type="text" name="tgl_entri" size="54" value="<?php echo date("Y-m-d");?>" readonly />
+	</div>
+	<div class="form-group text-center">
+		<input class="btn btn-primary" type="submit" name="hapus" id="button1" value="Hapus" />
+		<input class="btn btn-danger" type="button" name="back" id="button1" value="Back" onClick="self.history.back()"/>
+	</div>
+</fieldset>
 </form>
+</div>
+</div>
 </div>
 
 <?php
 }elseif($aksi=='cetak'){
 $kode=$_GET['kode_anggota'];
-$query=mysqli_query($koneksi, "SELECT * 
+$query=mysqli_query($koneksi, "SELECT *
 					FROM t_anggota
 					WHERE kode_anggota = '$kode'");
 $data=mysqli_fetch_array($query, MYSQLI_ASSOC);

@@ -1,5 +1,5 @@
 		<div class="sidebarmenu">
-				<a class="menuitem" href="index.php?pilih=home"><b>Home</b></a>      
+				<a class="menuitem" href="index.php?pilih=home"><b>Home</b></a>
 				<a class="menuitem submenuheader" href=""><b><b>Master Data</b></a>
 					<div class="submenu">
 						<ul>
@@ -30,6 +30,5 @@
 						<li><a href="index.php?pilih=4.3"><b>Setting User</b></a></li>
 						</ul>
 					</div>
-				<a class="menuitem_red" href="login/proses_logout.php"><b>Logout</b></a>      
+				<a class="menuitem_red" href="login/proses_logout.php"><b>Logout</b></a>
 			</div><br />
-				<?php include "kalender.php";?>

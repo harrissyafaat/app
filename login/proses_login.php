@@ -10,8 +10,8 @@ $password=$_POST['password'];
 // Melindungi dari SQL injection
 $username = stripslashes($username);
 $password = stripslashes($password);
-$username = mysql_real_escape_string($username);
-$password = mysql_real_escape_string($password);
+//$username = mysql_real_escape_string($username);
+//$password = mysql_real_escape_string($password);
 
 $query=mysqli_query($koneksi, "SELECT * FROM t_user WHERE username='$username' AND password='$password'");
 $jumlah=mysqli_num_rows($query);
@@ -27,4 +27,3 @@ if($jumlah > 0){
 	header("location:login.php?err=1");
 }
 ?>
-

@@ -1,44 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Login Page</title>
-	<link rel="shortcut icon" href="../images/logo_kop.gif" />
-       <link rel="stylesheet" href="../css/multi_form/style.css">
-        <!-- bootstrap 3.0.2 -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- font Awesome -->
-        <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="../css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- DATA TABLES -->
-        <link href="../css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Theme style -->
-        <link href="../css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <!-- polaris icheck -->
-        <link href="../css/iCheck/polaris/polaris.css" rel="stylesheet" type="text/css" />
-        <!-- Datepicker -->
-        <link href="../css/datepicker/datepicker.css" rel="stylesheet" type="text/css" />
-
-        <style type="text/css">
-		<style type="text/css">
-
-		.content{
-
-			display:none;
-
-		}
-
-		</style>
-
-          <!-- jQuery 2.0.2 -->
-
-          <script src="../js/jquery-2.2.4.js" crossorigin="anonymous"></script>          
-
-          <!-- jQuery UI 1.10.3 -->
-
-          <script src="../js/jquery-ui.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Jam'iyah Waqi'ah | Sunan Kalijoro Kediri</title>
+  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="../css/sb-admin.css" rel="stylesheet">
 
 
 	<script language="javascript">
@@ -64,55 +36,34 @@
 	</script>
 </head>
 
-<body>
-	<div align="center" style="margin-top:60px;">
-		<img width="90" src="../images/logo.png"/>
-		<h4 style="color:#bfb91e; text-shadow: 1px 1px #1A1111;">UNIT SIMPAN PINJAM<br>JAM'IYAH WAQI'AH SUNAN KALIJOGO</h4>
-	</div>
-	<div class="form-box" id="login-box" style="margin-top:10px;">
-		<div class="header"><h3>Aplikasi
-Simpan Pinjam</h3></div>
-	<form id="login-form" action="proses_login.php" method="post" onsubmit="return cekforms(this)">
-			<div class="body bg-gray">
-				<div class="error"><strong>
-					
-				</strong></div>
-				<div class="form-group">
-					<input type="text" name="username" class="form-control" placeholder="User Name" autocomplete="off" /><i class="fa fa-user" style="float:right; margin-top:-25px; margin-right:12px;"></i>
-					
-				</div>
-				<div class="form-group">
-					<input type="password" name="password" class="form-control" placeholder="Password"/><i class="fa fa-lock" style="float:right; margin-top:-25px; margin-right:12px;"></i>
-					 
-				</div>    
+<body class="bg-dark">
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <form id="login-form" action="proses_login.php" method="post" onsubmit="return cekforms(this)">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input name="username" class="form-control" id="username" type="text" placeholder="Masukan Username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input name="password" class="form-control" id="password" type="password" placeholder="Masukan Password">
+          </div>
+          <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox"> Remember Password</label>
+            </div>
+          </div>
+          <button type="submit" name="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+</body>
 
-			</div>
-			<div class="footer" style="height:80px; padding-top:20px;">    
-                                                       
-			<div style="float:right;">
-				<button style="font-size:18px; width:125px;" type="submit" class="btn btn-success"> Masuk</button>
-			</div> 	
-			</div>
-			<div class="bantuan" style="background: #B4B118; color: #000; height:25px;">
-				<center style="padding-top:2px;">@ 2016 Jam'iyah Waqi'ah Sunan Kalijogo</center>
-			</div>
-			<br>
-		</form>
-	</div>
-
-	<style type="text/css">
-		.bantuan {
-			-webkit-border-top-left-radius: 0;
-		    -webkit-border-top-right-radius: 0;
-		    -webkit-border-bottom-right-radius: 4px;
-		    -webkit-border-bottom-left-radius: 4px;
-		    -moz-border-radius-topleft: 0;
-		    -moz-border-radius-topright: 0;
-		    -moz-border-radius-bottomright: 4px;
-		    -moz-border-radius-bottomleft: 4px;
-		    border-top-left-radius: 0;
-		    border-top-right-radius: 0;
-		    border-bottom-right-radius: 4px;
-		    border-bottom-left-radius: 4px;
-		}
-	</style>
+</html>

@@ -1,7 +1,7 @@
 <?php
 	include "../config/conn.php";
 
-$kode_anggota		= $_POST['kode_anggota'];	
+$kode_anggota		= $_POST['kode_anggota'];
 // SIMPAN
 $kode_simpan		= $_POST['kode_simpan'];
 $tgl_simpan			= $_POST['tgl_simpan'];
@@ -35,10 +35,10 @@ $sisa_angsuran		= $_POST['sisa_angsuran'];
 $sisa_pinjaman		= $_POST['sisa_pinjaman'];
 $u_entry			= $_POST['u_entry'];
 $tgl_entri			= $_POST['tgl_entri'];
-	
+
 $pros=$_GET['pros'];
 
-if($pros=="simpan" || $pros=="pinjam"){	
+if($pros=="simpan" || $pros=="pinjam"){
 	$q = mysqli_query ($koneksi, "SELECT T.besar_tabungan, A.kode_tabungan
 					FROM t_tabungan AS T, t_anggota AS A
 					WHERE T.kode_tabungan = A.kode_tabungan
@@ -46,18 +46,18 @@ if($pros=="simpan" || $pros=="pinjam"){
 
 	$data = mysqli_fetch_array($q, MYSQLI_ASSOC);
 	$tb = new Tabungan($data['besar_tabungan']);
-	
+
 } elseif($pros=="angsur"){
 	$q = mysqli_query ($koneksi, "SELECT T.besar_tabungan, A.kode_tabungan
 					FROM t_tabungan T, t_anggota A
 					WHERE T.kode_tabungan = A.kode_tabungan
 					AND A.kode_anggota = '$kode_anggota'");
 	$data=mysqli_fetch_array($q, MYSQLI_ASSOC);
-	$tb = new Tabungan($data['besar_tabungan']);	
-	
+	$tb = new Tabungan($data['besar_tabungan']);
+
 	$qu = mysqli_query ($koneksi, "SELECT * FROM t_pinjam WHERE kode_anggota='$kode_anggota'");
 	$data2=mysqli_fetch_array($qu, MYSQLI_ASSOC);
-	
+
 	$sisang = $data2['lama_angsuran'] - $angsuran_ke;
 	$sipin	= $data2['sisa_pinjaman'] - $besar_angsuran;
 }
@@ -72,13 +72,13 @@ if($pros=="simpan" || $pros=="pinjam"){
 
 							$qtambah = mysqli_query ($koneksi, "INSERT INTO t_simpan (kode_simpan, kode_jenis_simpan, kode_anggota, tgl_simpan, besar_simpanan, u_entry, tgl_entri) VALUES('','$kode_jenis_transaksi','$kode_anggota','$tgl_simpan','$nominal','$u_entry','$tgl_entri')");
 
-							$q = mysqli_query ($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru' 
+							$q = mysqli_query ($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru'
 					  						WHERE kode_tabungan='$data[kode_tabungan]'");
-							
-							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan' style='display:none;' name='frame'></iframe>";
+
+							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=simpan'  name='frame'></iframe>";
 							echo "<script>setTimeout(function(){},1000); frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
 							break;
-		
+
 		case "pinjam"	:	$tb->pinjam($besar_pinjaman);
 							$saldo_baru = $tb->cek_saldo();
 							$qtambah = mysqli_query ($koneksi, "INSERT INTO t_pinjam
@@ -86,20 +86,20 @@ if($pros=="simpan" || $pros=="pinjam"){
 							$q = mysqli_query ($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru'
 							 				WHERE kode_tabungan='$data[kode_tabungan]'");
 
-							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=pinjam' style='display:none' name='frame'></iframe>";
+							echo "<iframe src='../tandabukti/cetak_buku.php?kode_anggota=".$kode_anggota."&jenis_transaksi=pinjam'  name='frame'></iframe>";
 							echo "<script>setTimeout(function(){},1000); frames['frame'].print(); window.location.replace('../index.php?pilih=2.1');</script>";
 							break;
-		
-		case "angsur"	:	
+
+		case "angsur"	:
 							$tb = new Tabungan($data['besar_angsuran']);
 							$tb->simpan($besar_angsuran);
 					  		$saldo_baru = $tb->cek_saldo();
-							
+
 							//INSERT data angsur
 							$qtambah = mysqli_query($koneksi, "INSERT INTO t_angsur
 												VALUES('','$kode_pinjam','$kode_anggota','$tgl_angsur','$besar_angsuran','$angsuran_ke','$u_entry','$tgl_entri')");
 
-							$qubah = mysqli_query($koneksi, "UPDATE t_pinjam SET sisa_angsuran = '$sisang', sisa_pinjaman = '$sipin' WHERE kode_pinjam='$kode_pinjam'");	
+							$qubah = mysqli_query($koneksi, "UPDATE t_pinjam SET sisa_angsuran = '$sisang', sisa_pinjaman = '$sipin' WHERE kode_pinjam='$kode_pinjam'");
 							$q = mysqli_query($koneksi, "UPDATE t_tabungan SET besar_tabungan = '$saldo_baru'
 											WHERE kode_tabungan='$data[kode_tabungan]'");
 
